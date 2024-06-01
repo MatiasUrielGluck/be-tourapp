@@ -42,7 +42,7 @@ public class Usuario implements UserDetails {
     @Column(name = "num_telefono", nullable = false)
     private String numTelefono;
 
-    @Column(name = "foto", nullable = true)
+    @Column(name = "foto")
     private String foto;
 
 

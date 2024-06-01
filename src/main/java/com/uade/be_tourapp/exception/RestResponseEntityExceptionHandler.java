@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler
         extends ResponseEntityExceptionHandler {
@@ -38,7 +35,7 @@ public class RestResponseEntityExceptionHandler
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
-    /*
+    /* TODO: Add this handlers
     @ExceptionHandler(value
             = {EntityAlreadyExistsException.class})
     protected ResponseEntity<Object> handleEntityAlreadyExists(

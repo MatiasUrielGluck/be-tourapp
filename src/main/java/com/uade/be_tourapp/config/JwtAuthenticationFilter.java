@@ -1,6 +1,5 @@
 package com.uade.be_tourapp.config;
 
-import com.uade.be_tourapp.exception.JwtFilterException;
 import com.uade.be_tourapp.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

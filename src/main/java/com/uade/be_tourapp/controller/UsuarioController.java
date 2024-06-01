@@ -4,7 +4,6 @@ import com.uade.be_tourapp.dto.LoginRequestDTO;
 import com.uade.be_tourapp.dto.LoginResponseDTO;
 import com.uade.be_tourapp.dto.RegistroRequestDTO;
 import com.uade.be_tourapp.dto.RegistroResponseDTO;
-import com.uade.be_tourapp.service.JwtService;
 import com.uade.be_tourapp.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private final JwtService jwtService;
 
-    public UsuarioController(UsuarioService usuarioService, JwtService jwtService) {
+    public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        this.jwtService = jwtService;
     }
 
     @PostMapping("/signup")
