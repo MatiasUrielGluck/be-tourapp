@@ -31,7 +31,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginUsuario(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<LoginResponseDTO> loginUsuario(@RequestBody @Validated LoginRequestDTO loginRequestDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(usuarioService.loguear(loginRequestDTO));

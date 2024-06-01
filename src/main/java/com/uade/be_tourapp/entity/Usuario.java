@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.enums.AuthStrategiesEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -21,25 +22,29 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "apellido", nullable = false)
+    @Column(name = "apellido")
     private String apellido;
 
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "sexo", nullable = false)
+    @Column(name = "proveedor")
+    @Enumerated(EnumType.STRING)
+    private AuthStrategiesEnum proveedor;
+
+    @Column(name = "sexo")
     private String sexo;
 
-    @Column(name = "dni", unique = true, nullable = false)
+    @Column(name = "dni", unique = true)
     private Integer dni;
 
-    @Column(name = "num_telefono", nullable = false)
+    @Column(name = "num_telefono")
     private String numTelefono;
 
     @Column(name = "foto")

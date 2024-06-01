@@ -4,6 +4,7 @@ import com.uade.be_tourapp.dto.ErrorResponseDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -30,6 +31,17 @@ public class RestResponseEntityExceptionHandler
             RuntimeException ex, WebRequest request) {
         ErrorResponseDTO bodyOfResponse = ErrorResponseDTO.builder()
                 .error("User already exists.")
+                .build();
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value
+            = {BadRequestException.class})
+    protected ResponseEntity<Object> handleBadRequest(
+            RuntimeException ex, WebRequest request) {
+        ErrorResponseDTO bodyOfResponse = ErrorResponseDTO.builder()
+                .error(ex.getMessage())
                 .build();
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
