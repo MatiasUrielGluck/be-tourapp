@@ -4,5 +4,5 @@ public enum AuthStrategiesEnum {
     LOCAL,
     GOOGLE,
     APPLE,
-    FACEBOOK;
+    FACEBOOK
 }
