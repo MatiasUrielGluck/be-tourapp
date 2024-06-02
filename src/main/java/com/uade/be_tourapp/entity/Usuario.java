@@ -1,6 +1,7 @@
 package com.uade.be_tourapp.entity;
 
 import com.uade.be_tourapp.enums.AuthStrategiesEnum;
+import com.uade.be_tourapp.enums.GenerosEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -17,6 +18,7 @@ import java.util.List;
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "rol", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("USUARIO")
 public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +40,9 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AuthStrategiesEnum proveedor;
 
-    @Column(name = "sexo")
-    private String sexo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "genero")
+    private GenerosEnum genero;
 
     @Column(name = "dni", unique = true)
     private Integer dni;
@@ -50,6 +53,8 @@ public class Usuario implements UserDetails {
     @Column(name = "foto")
     private String foto;
 
+    @Column(name = "kyc_completed", nullable = false)
+    private Boolean kycCompleted;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

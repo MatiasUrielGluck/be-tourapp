@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.config;
 
+import com.uade.be_tourapp.exception.GenericException;
 import com.uade.be_tourapp.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -71,8 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            // handlerExceptionResolver.resolveException(request, response, null, new JwtFilterException("Token error")); // TODO: move this exception to global exception handler
-            handlerExceptionResolver.resolveException(request, response, null, exception);
+            logger.warn(exception);
+            handlerExceptionResolver.resolveException(request, response, null, new GenericException("Error: ", exception));
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.uade.be_tourapp.exception;
 
 import com.uade.be_tourapp.dto.ErrorResponseDTO;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,18 @@ public class RestResponseEntityExceptionHandler
         extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = {JwtFilterException.class})
+            = {GenericException.class})
+    protected ResponseEntity<Object> handleGenericException(
+            RuntimeException ex, WebRequest request) {
+        ErrorResponseDTO bodyOfResponse = ErrorResponseDTO.builder()
+                .error(ex.getMessage())
+                .build();
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(value
+            = {JwtFilterException.class, ExpiredJwtException.class})
     protected ResponseEntity<Object> handleSignatureException(
             RuntimeException ex, WebRequest request) {
         ErrorResponseDTO bodyOfResponse = ErrorResponseDTO.builder()

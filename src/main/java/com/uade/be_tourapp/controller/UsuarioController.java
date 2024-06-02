@@ -1,17 +1,11 @@
 package com.uade.be_tourapp.controller;
 
-import com.uade.be_tourapp.dto.LoginRequestDTO;
-import com.uade.be_tourapp.dto.LoginResponseDTO;
-import com.uade.be_tourapp.dto.RegistroRequestDTO;
-import com.uade.be_tourapp.dto.RegistroResponseDTO;
+import com.uade.be_tourapp.dto.*;
 import com.uade.be_tourapp.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/usuario")
 @RestController
@@ -35,5 +29,19 @@ public class UsuarioController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(usuarioService.loguear(loginRequestDTO));
+    }
+
+    @PutMapping("/kyc")
+    public ResponseEntity<KycResponseDTO> generalKyc(@RequestBody @Validated KycRequestDTO kycRequestDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(usuarioService.generalKyc(kycRequestDTO));
+    }
+
+    @PutMapping("/kyc/guia")
+    public ResponseEntity<KycResponseDTO> guiaKyc(@RequestBody @Validated KycGuiaRequestDTO kycGuiaRequestDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(usuarioService.guiaKyc(kycGuiaRequestDTO));
     }
 }
