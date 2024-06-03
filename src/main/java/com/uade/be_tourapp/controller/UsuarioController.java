@@ -44,4 +44,9 @@ public class UsuarioController {
                 .status(HttpStatus.OK)
                 .body(usuarioService.guiaKyc(kycGuiaRequestDTO));
     }
+
+    @GetMapping("")
+    public ResponseEntity<AccountInfoDTO> getAccountInfo() {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.getAccountInfo());
+    }
 }

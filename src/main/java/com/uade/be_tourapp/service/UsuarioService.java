@@ -112,4 +112,18 @@ public class UsuarioService {
                 .kycCompleted(true)
                 .build();
     }
+
+    public AccountInfoDTO getAccountInfo() {
+        Usuario usuario = obtenerAutenticado();
+        return AccountInfoDTO.builder()
+                .email(usuario.getEmail())
+                .nombre(usuario.getNombre())
+                .apellido(usuario.getApellido())
+                .genero(usuario.getGenero())
+                .dni(usuario.getDni())
+                .numTelefono(usuario.getNumTelefono())
+                .foto(usuario.getFoto())
+                .kycCompleted(usuario.getKycCompleted())
+                .build();
+    }
 }
