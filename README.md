@@ -1,4 +1,4 @@
-# Tour App (fe-tourapp)
+# Tour App (be-tourapp)
 
 Desarrollo del trabajo práctico de la materia Proceso de Desarrollo de Software, de la carrera Ingeniería Informática, UADE.
 
