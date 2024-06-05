@@ -11,9 +11,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-
-
-
 public class Viaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +25,11 @@ public class Viaje {
     private Guia guia;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "fechaInicio")
+    @Column(name = "fecha_inicio")
     private Date fechaInicio;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "fechaFin")
+    @Column(name = "fecha_fin")
     private Date fechaFin;
 
     @Column(name = "precio")

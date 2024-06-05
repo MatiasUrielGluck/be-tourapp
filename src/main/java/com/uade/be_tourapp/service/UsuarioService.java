@@ -126,4 +126,9 @@ public class UsuarioService {
                 .kycCompleted(usuario.getKycCompleted())
                 .build();
     }
+
+    public Guia getGuiaById(Integer id) {
+        return (Guia) usuarioRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Guia no encontrado"));
+    }
 }
