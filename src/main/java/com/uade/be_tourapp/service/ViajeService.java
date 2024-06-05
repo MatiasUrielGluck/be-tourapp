@@ -42,13 +42,13 @@ public class ViajeService {
         Viaje savedViaje = viajeRepository.save(viaje);
 
         // Crear el DTO de respuesta
-        ViajeResponseDTO responseDTO = new ViajeResponseDTO();
-        responseDTO.setId(savedViaje.getId());
-        responseDTO.setTuristaId(savedViaje.getTurista().getId());
-        responseDTO.setGuiaId(savedViaje.getGuia().getId());
-        responseDTO.setFecha(savedViaje.getFechaFin());
-        responseDTO.setPrecio(savedViaje.getPrecio());
-
-        return responseDTO;
+        return ViajeResponseDTO.builder()
+                .id(savedViaje.getId())
+                .turistaId(savedViaje.getId())
+                .guiaId(savedViaje.getGuia().getId())
+                .fechaInicio(savedViaje.getFechaInicio())
+                .fechaFin(savedViaje.getFechaFin())
+                .precio(savedViaje.getPrecio())
+                .build();
     }
 }

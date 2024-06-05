@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ViajeController {
 
-
     private final ViajeService viajeService;
 
     public ViajeController(ViajeService viajeService){this.viajeService = viajeService; }
