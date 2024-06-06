@@ -62,8 +62,14 @@ public class ViajeService {
                 .findById(viajeId)
                 .orElseThrow(() -> new BadRequestException("El viaje no existe"));
 
-        Usuario turista = usuarioService.obtenerAutenticado();
-        if (!Objects.equals(viaje.getTurista().getId(), turista.getId())) {
+        Guia guia;
+        try {
+            guia = (Guia) usuarioService.obtenerAutenticado();
+        } catch (Exception e) {
+            throw new BadRequestException("No sos un guía.");
+        }
+
+        if (!Objects.equals(viaje.getGuia().getId(), guia.getId())) {
             throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
         }
 
@@ -78,9 +84,16 @@ public class ViajeService {
                 .findById(viajeId)
                 .orElseThrow(() -> new BadRequestException("El viaje no existe"));
 
-        Usuario turista = usuarioService.obtenerAutenticado();
-        if (!Objects.equals(viaje.getTurista().getId(), turista.getId())) {
-            throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
+        Usuario usuario = usuarioService.obtenerAutenticado();
+
+        if (usuario instanceof Guia) {
+            if (!Objects.equals(viaje.getGuia().getId(), usuario.getId())) {
+                throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
+            }
+        } else {
+            if (!Objects.equals(viaje.getTurista().getId(), usuario.getId())) {
+                throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
+            }
         }
 
         viaje.getEstadoViaje().cancelar(viaje);
