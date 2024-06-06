@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.dto;
 
+import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +15,5 @@ public class ViajeResponseDTO {
     private Date fechaInicio;
     private Date fechaFin;
     private double precio;
+    private EstadosViajeEnum estado;
 }

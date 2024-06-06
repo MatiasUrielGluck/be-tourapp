@@ -1,8 +1,12 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.enums.EstadosViajeEnum;
+import com.uade.be_tourapp.state.EstadoViaje.EstadoViaje;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -35,4 +39,12 @@ public class Viaje {
     @Column(name = "precio")
     private double precio;
 
+    @Column(name = "estado")
+    @Enumerated(EnumType.STRING)
+    private EstadosViajeEnum estado;
+
+
+    public EstadoViaje getEstadoViaje() {
+        return this.estado.getEstadoViaje();
+    }
 }

@@ -5,8 +5,12 @@ import com.uade.be_tourapp.dto.ViajeResponseDTO;
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
+import com.uade.be_tourapp.enums.EstadosViajeEnum;
+import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class ViajeService {
@@ -19,6 +23,18 @@ public class ViajeService {
         this.usuarioService = usuarioService;
     }
 
+    public ViajeResponseDTO generarResponse(Viaje viaje) {
+        return ViajeResponseDTO.builder()
+                .id(viaje.getId())
+                .turistaId(viaje.getTurista().getId())
+                .guiaId(viaje.getGuia().getId())
+                .fechaInicio(viaje.getFechaInicio())
+                .fechaFin(viaje.getFechaFin())
+                .precio(viaje.getPrecio())
+                .estado(viaje.getEstado())
+                .build();
+    }
+
     public ViajeResponseDTO registrarViaje(ViajeRequestDTO viajeRequestDTO) {
         Usuario turista = usuarioService.obtenerAutenticado();
         Guia guia = usuarioService.getGuiaById(viajeRequestDTO.getGuiaId());
@@ -29,17 +45,43 @@ public class ViajeService {
                 .fechaInicio(viajeRequestDTO.getFechaInicio())
                 .fechaFin(viajeRequestDTO.getFechaFin())
                 .precio(viajeRequestDTO.getPrecio())
+                .estado(EstadosViajeEnum.RESERVADO)
                 .build();
 
         Viaje savedViaje = viajeRepository.save(viaje);
 
-        return ViajeResponseDTO.builder()
-                .id(savedViaje.getId())
-                .turistaId(savedViaje.getTurista().getId())
-                .guiaId(savedViaje.getGuia().getId())
-                .fechaInicio(savedViaje.getFechaInicio())
-                .fechaFin(savedViaje.getFechaFin())
-                .precio(savedViaje.getPrecio())
-                .build();
+        return generarResponse(savedViaje);
+    }
+
+    public ViajeResponseDTO confirmarViaje(Integer viajeId) {
+        Viaje viaje = viajeRepository
+                .findById(viajeId)
+                .orElseThrow(() -> new BadRequestException("El viaje no existe"));
+
+        Usuario turista = usuarioService.obtenerAutenticado();
+        if (!Objects.equals(viaje.getTurista().getId(), turista.getId())) {
+            throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
+        }
+
+        viaje.getEstadoViaje().confirmar(viaje);
+        Viaje savedViaje = viajeRepository.save(viaje);
+
+        return generarResponse(savedViaje);
+    }
+
+    public ViajeResponseDTO cancelarViaje(Integer viajeId) {
+        Viaje viaje = viajeRepository
+                .findById(viajeId)
+                .orElseThrow(() -> new BadRequestException("El viaje no existe"));
+
+        Usuario turista = usuarioService.obtenerAutenticado();
+        if (!Objects.equals(viaje.getTurista().getId(), turista.getId())) {
+            throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
+        }
+
+        viaje.getEstadoViaje().cancelar(viaje);
+        Viaje savedViaje = viajeRepository.save(viaje);
+
+        return generarResponse(savedViaje);
     }
 }
