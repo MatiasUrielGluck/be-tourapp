@@ -21,4 +21,10 @@ public class ViajeRequestDTO {
     @NotNull
     private double precio;
 
+    @NotNull
+    private String pais;
+
+    @NotNull
+    private String ciudad;
+
 }

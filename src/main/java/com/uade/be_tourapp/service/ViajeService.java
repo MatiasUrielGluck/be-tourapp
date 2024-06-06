@@ -30,6 +30,8 @@ public class ViajeService {
                 .guiaId(viaje.getGuia().getId())
                 .fechaInicio(viaje.getFechaInicio())
                 .fechaFin(viaje.getFechaFin())
+                .pais(viaje.getPais())
+                .ciudad(viaje.getCiudad())
                 .precio(viaje.getPrecio())
                 .estado(viaje.getEstado())
                 .build();
@@ -44,6 +46,8 @@ public class ViajeService {
                 .guia(guia)
                 .fechaInicio(viajeRequestDTO.getFechaInicio())
                 .fechaFin(viajeRequestDTO.getFechaFin())
+                .pais(viajeRequestDTO.getPais())
+                .ciudad(viajeRequestDTO.getCiudad())
                 .precio(viajeRequestDTO.getPrecio())
                 .estado(EstadosViajeEnum.RESERVADO)
                 .build();

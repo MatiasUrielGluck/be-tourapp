@@ -14,6 +14,8 @@ public class ViajeResponseDTO {
     private Integer guiaId;
     private Date fechaInicio;
     private Date fechaFin;
+    private String pais;
+    private String ciudad;
     private double precio;
     private EstadosViajeEnum estado;
 }

@@ -36,6 +36,12 @@ public class Viaje {
     @Column(name = "fecha_fin")
     private Date fechaFin;
 
+    @Column(name = "pais")
+    private String pais;
+
+    @Column(name = "ciudad")
+    private String ciudad;
+
     @Column(name = "precio")
     private double precio;
 
