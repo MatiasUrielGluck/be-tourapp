@@ -8,6 +8,7 @@ import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ViajeRepository;
+import com.uade.be_tourapp.state.EstadoViaje.impl.EstadoReservado;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class ViajeService {
                 .pais(viaje.getPais())
                 .ciudad(viaje.getCiudad())
                 .precio(viaje.getPrecio())
-                .estado(viaje.getEstado())
+                .estado(viaje.getEstado().getNombre())
                 .build();
     }
 
@@ -49,9 +50,9 @@ public class ViajeService {
                 .pais(viajeRequestDTO.getPais())
                 .ciudad(viajeRequestDTO.getCiudad())
                 .precio(viajeRequestDTO.getPrecio())
-                .estado(EstadosViajeEnum.RESERVADO)
                 .build();
 
+        viaje.cambiarEstado(new EstadoReservado());
         Viaje savedViaje = viajeRepository.save(viaje);
 
         return generarResponse(savedViaje);
@@ -73,7 +74,7 @@ public class ViajeService {
             throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
         }
 
-        viaje.getEstadoViaje().confirmar(viaje);
+        viaje.confirmar();
         Viaje savedViaje = viajeRepository.save(viaje);
 
         return generarResponse(savedViaje);
@@ -96,7 +97,7 @@ public class ViajeService {
             }
         }
 
-        viaje.getEstadoViaje().cancelar(viaje);
+        viaje.cancelar();
         Viaje savedViaje = viajeRepository.save(viaje);
 
         return generarResponse(savedViaje);

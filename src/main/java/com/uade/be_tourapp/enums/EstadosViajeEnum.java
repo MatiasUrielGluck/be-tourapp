@@ -12,9 +12,9 @@ public enum EstadosViajeEnum {
     CONFIRMADO(new EstadoConfirmado()),
     CANCELADO(new EstadoCancelado());
 
-    private final EstadoViaje estadoViaje;
+    private final EstadoViaje estado;
 
     EstadosViajeEnum(EstadoViaje estadoViaje) {
-        this.estadoViaje = estadoViaje;
+        this.estado = estadoViaje;
     }
 }

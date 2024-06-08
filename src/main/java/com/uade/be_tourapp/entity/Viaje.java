@@ -47,10 +47,26 @@ public class Viaje {
 
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
-    private EstadosViajeEnum estado;
+    private EstadosViajeEnum nombreEstado;
 
+    @Transient
+    private EstadoViaje estado;
 
-    public EstadoViaje getEstadoViaje() {
-        return this.estado.getEstadoViaje();
+    @PostLoad
+    public void postLoad() {
+        this.estado = getNombreEstado().getEstado();
+    }
+
+    public void cambiarEstado(EstadoViaje estado) {
+        this.estado = estado;
+        this.nombreEstado = estado.getNombre();
+    }
+
+    public void confirmar() {
+        this.estado.confirmar(this);
+    }
+
+    public void cancelar() {
+        this.estado.cancelar(this);
     }
 }
