@@ -3,10 +3,12 @@ package com.uade.be_tourapp.service;
 import com.uade.be_tourapp.dto.ViajeRequestDTO;
 import com.uade.be_tourapp.dto.ViajeResponseDTO;
 import com.uade.be_tourapp.entity.Guia;
+import com.uade.be_tourapp.entity.Servicio;
 import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
+import com.uade.be_tourapp.repository.ServicioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import com.uade.be_tourapp.state.EstadoViaje.impl.EstadoReservado;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,12 @@ public class ViajeService {
 
     private final ViajeRepository viajeRepository;
     private final UsuarioService usuarioService;
+    private final ServicioRepository servicioRepository;
 
-    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService) {
+    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository) {
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
+        this.servicioRepository = servicioRepository;
     }
 
     public ViajeResponseDTO generarResponse(Viaje viaje) {
@@ -29,6 +33,7 @@ public class ViajeService {
                 .id(viaje.getId())
                 .turistaId(viaje.getTurista().getId())
                 .guiaId(viaje.getGuia().getId())
+                .servicioId(viaje.getServicio().getId())
                 .fechaInicio(viaje.getFechaInicio())
                 .fechaFin(viaje.getFechaFin())
                 .pais(viaje.getPais())
@@ -41,10 +46,12 @@ public class ViajeService {
     public ViajeResponseDTO registrarViaje(ViajeRequestDTO viajeRequestDTO) {
         Usuario turista = usuarioService.obtenerAutenticado();
         Guia guia = usuarioService.getGuiaById(viajeRequestDTO.getGuiaId());
+        Servicio servicio = servicioRepository.findById(viajeRequestDTO.getServicioId()).orElseThrow(() -> new BadRequestException("El servicio no existe."));
 
         Viaje viaje = Viaje.builder()
                 .turista(turista)
                 .guia(guia)
+                .servicio(servicio)
                 .fechaInicio(viajeRequestDTO.getFechaInicio())
                 .fechaFin(viajeRequestDTO.getFechaFin())
                 .pais(viajeRequestDTO.getPais())

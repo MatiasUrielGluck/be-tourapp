@@ -45,6 +45,10 @@ public class Viaje {
     @Column(name = "precio")
     private double precio;
 
+    @OneToOne
+    @JoinColumn(name = "servicio_id", referencedColumnName = "id")
+    private Servicio servicio;
+
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private EstadosViajeEnum nombreEstado;

@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @NoArgsConstructor @AllArgsConstructor
@@ -18,4 +20,7 @@ public class Guia extends Usuario {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "credencial_numero", referencedColumnName = "numero")
     private Credencial credencial;
+
+    @OneToMany(mappedBy = "guia")
+    private List<Servicio> servicios;
 }

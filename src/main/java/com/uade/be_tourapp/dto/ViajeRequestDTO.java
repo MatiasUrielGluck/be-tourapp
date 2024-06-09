@@ -13,6 +13,9 @@ public class ViajeRequestDTO {
     private Integer guiaId;
 
     @NotNull
+    private Integer servicioId;
+
+    @NotNull
     private Date fechaInicio;
 
     @NotNull
