@@ -42,9 +42,6 @@ public class Viaje {
     @Column(name = "ciudad")
     private String ciudad;
 
-    @Column(name = "precio")
-    private double precio;
-
     @OneToOne
     @JoinColumn(name = "servicio_id", referencedColumnName = "id")
     private Servicio servicio;

@@ -17,6 +17,5 @@ public class ViajeResponseDTO {
     private Date fechaFin;
     private String pais;
     private String ciudad;
-    private double precio;
     private EstadosViajeEnum estado;
 }

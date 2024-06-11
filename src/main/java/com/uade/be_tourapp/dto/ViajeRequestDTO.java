@@ -22,9 +22,6 @@ public class ViajeRequestDTO {
     private Date fechaFin;
 
     @NotNull
-    private double precio;
-
-    @NotNull
     private String pais;
 
     @NotNull

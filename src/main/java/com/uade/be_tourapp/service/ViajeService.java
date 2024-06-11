@@ -38,7 +38,6 @@ public class ViajeService {
                 .fechaFin(viaje.getFechaFin())
                 .pais(viaje.getPais())
                 .ciudad(viaje.getCiudad())
-                .precio(viaje.getPrecio())
                 .estado(viaje.getEstado().getNombre())
                 .build();
     }
@@ -56,7 +55,6 @@ public class ViajeService {
                 .fechaFin(viajeRequestDTO.getFechaFin())
                 .pais(viajeRequestDTO.getPais())
                 .ciudad(viajeRequestDTO.getCiudad())
-                .precio(viajeRequestDTO.getPrecio())
                 .build();
 
         viaje.cambiarEstado(new EstadoReservado());
