@@ -18,6 +18,10 @@ public class EstadoCancelado extends EstadoViaje {
         throw new BadRequestException("El estado ya se encuentra cancelado.");
     }
 
+    public void concluir(Viaje viaje) {
+        throw new BadRequestException("No se puede concluir un viaje cancelado.");
+    }
+
     public void notificar(Viaje viaje) {
 
     }

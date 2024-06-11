@@ -18,6 +18,10 @@ public class EstadoConfirmado extends EstadoViaje {
         viaje.cambiarEstado(new EstadoCancelado());
     }
 
+    public void concluir(Viaje viaje) {
+        viaje.cambiarEstado(new EstadoConcluido());
+    }
+
     public void notificar(Viaje viaje) {
 
     }

@@ -42,7 +42,7 @@ public class Viaje {
     @Column(name = "ciudad")
     private String ciudad;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "servicio_id", referencedColumnName = "id")
     private Servicio servicio;
 
@@ -69,5 +69,9 @@ public class Viaje {
 
     public void cancelar() {
         this.estado.cancelar(this);
+    }
+
+    public void concluir() {
+        this.estado.concluir(this);
     }
 }

@@ -37,4 +37,11 @@ public class ViajeController {
                 .status(HttpStatus.OK)
                 .body(viajeService.cancelarViaje(id));
     }
+
+    @GetMapping("/concluir/{id}")
+    public ResponseEntity<ViajeResponseDTO> concluirViaje(@PathVariable Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(viajeService.concluirViaje(id));
+    }
 }

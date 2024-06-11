@@ -12,5 +12,6 @@ public abstract class EstadoViaje {
 
     abstract public void confirmar(Viaje viaje);
     abstract public void cancelar(Viaje viaje);
+    abstract public void concluir(Viaje viaje);
     abstract public void notificar(Viaje viaje);
 }

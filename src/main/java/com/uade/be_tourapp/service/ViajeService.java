@@ -28,6 +28,25 @@ public class ViajeService {
         this.servicioRepository = servicioRepository;
     }
 
+    public Viaje obtenerViajeGuiaAutorizado(Integer viajeId) {
+        Viaje viaje = viajeRepository
+                .findById(viajeId)
+                .orElseThrow(() -> new BadRequestException("El viaje no existe"));
+
+        Guia guia;
+        try {
+            guia = (Guia) usuarioService.obtenerAutenticado();
+        } catch (Exception e) {
+            throw new BadRequestException("No sos un guía.");
+        }
+
+        if (!Objects.equals(viaje.getGuia().getId(), guia.getId())) {
+            throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
+        }
+
+        return viaje;
+    }
+
     public ViajeResponseDTO generarResponse(Viaje viaje) {
         return ViajeResponseDTO.builder()
                 .id(viaje.getId())
@@ -64,21 +83,7 @@ public class ViajeService {
     }
 
     public ViajeResponseDTO confirmarViaje(Integer viajeId) {
-        Viaje viaje = viajeRepository
-                .findById(viajeId)
-                .orElseThrow(() -> new BadRequestException("El viaje no existe"));
-
-        Guia guia;
-        try {
-            guia = (Guia) usuarioService.obtenerAutenticado();
-        } catch (Exception e) {
-            throw new BadRequestException("No sos un guía.");
-        }
-
-        if (!Objects.equals(viaje.getGuia().getId(), guia.getId())) {
-            throw new BadRequestException("No estás autorizado."); // DT: se debería crear una excepción ForbiddenException.
-        }
-
+        Viaje viaje = obtenerViajeGuiaAutorizado(viajeId);
         viaje.confirmar();
         Viaje savedViaje = viajeRepository.save(viaje);
 
@@ -103,6 +108,14 @@ public class ViajeService {
         }
 
         viaje.cancelar();
+        Viaje savedViaje = viajeRepository.save(viaje);
+
+        return generarResponse(savedViaje);
+    }
+
+    public ViajeResponseDTO concluirViaje(Integer viajeId) {
+        Viaje viaje = obtenerViajeGuiaAutorizado(viajeId);
+        viaje.concluir();
         Viaje savedViaje = viajeRepository.save(viaje);
 
         return generarResponse(savedViaje);
