@@ -55,7 +55,7 @@ public class RestResponseEntityExceptionHandler
                 .error(ex.getMessage())
                 .build();
         return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     /* TODO: Add this handlers

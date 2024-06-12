@@ -6,6 +6,7 @@ import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;
 import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
+import com.uade.be_tourapp.enums.DocumentoEnum;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ServicioRepository;
@@ -21,11 +22,13 @@ public class ViajeService {
     private final ViajeRepository viajeRepository;
     private final UsuarioService usuarioService;
     private final ServicioRepository servicioRepository;
+    private final TransaccionService transaccionService;
 
-    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository) {
+    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, TransaccionService transaccionService) {
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
         this.servicioRepository = servicioRepository;
+        this.transaccionService = transaccionService;
     }
 
     public Viaje obtenerViajeGuiaAutorizado(Integer viajeId) {
@@ -78,6 +81,8 @@ public class ViajeService {
 
         viaje.cambiarEstado(new EstadoReservado());
         Viaje savedViaje = viajeRepository.save(viaje);
+
+        transaccionService.generarFactura(savedViaje, DocumentoEnum.ANTICIPO);
 
         return generarResponse(savedViaje);
     }
