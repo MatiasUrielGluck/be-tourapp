@@ -12,7 +12,6 @@ import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ServicioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import com.uade.be_tourapp.state.EstadoViaje.EstadoViaje;
-import com.uade.be_tourapp.state.EstadoViaje.impl.EstadoReservado;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

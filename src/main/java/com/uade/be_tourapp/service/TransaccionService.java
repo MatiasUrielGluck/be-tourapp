@@ -1,10 +1,8 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.dto.DocumentoDTO;
 import com.uade.be_tourapp.dto.FacturaDTO;
 import com.uade.be_tourapp.dto.GenericResponseDTO;
 import com.uade.be_tourapp.entity.Devolucion;
-import com.uade.be_tourapp.entity.Documento;
 import com.uade.be_tourapp.entity.Factura;
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.DocumentoEnum;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransaccionService {
