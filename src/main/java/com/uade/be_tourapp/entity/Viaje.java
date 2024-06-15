@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "viaje")
@@ -48,19 +49,26 @@ public class Viaje {
 
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
-    private EstadosViajeEnum nombreEstado;
+    private EstadosViajeEnum estadoEnum;
+
+    @Transient
+    private List<EstadoViaje> estadosDisponibles;
 
     @Transient
     private EstadoViaje estado;
 
-    @PostLoad
-    public void postLoad() {
-        this.estado = getNombreEstado().getEstado();
+    public void inicializarEstado(List<EstadoViaje> estadosDisponibles) {
+        this.estadosDisponibles = estadosDisponibles;
+        cambiarEstado(estadoEnum);
     }
 
-    public void cambiarEstado(EstadoViaje estado) {
-        this.estado = estado;
-        this.nombreEstado = estado.getNombre();
+    public void cambiarEstado(EstadosViajeEnum nuevoEstado) {
+        this.estadoEnum = nuevoEstado;
+        this.estado = this.estadosDisponibles
+                .stream()
+                .filter(estadoViaje -> estadoViaje.getNombre() == this.estadoEnum)
+                .findAny()
+                .orElseThrow();
     }
 
     public void confirmar() {

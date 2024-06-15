@@ -11,9 +11,11 @@ import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ServicioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
+import com.uade.be_tourapp.state.EstadoViaje.EstadoViaje;
 import com.uade.be_tourapp.state.EstadoViaje.impl.EstadoReservado;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -23,12 +25,14 @@ public class ViajeService {
     private final UsuarioService usuarioService;
     private final ServicioRepository servicioRepository;
     private final TransaccionService transaccionService;
+    private final List<EstadoViaje> estadosViaje;
 
-    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, TransaccionService transaccionService) {
+    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, TransaccionService transaccionService, List<EstadoViaje> estadosViaje) {
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
         this.servicioRepository = servicioRepository;
         this.transaccionService = transaccionService;
+        this.estadosViaje = estadosViaje;
     }
 
     public Viaje obtenerViajeGuiaAutorizado(Integer viajeId) {
@@ -77,9 +81,10 @@ public class ViajeService {
                 .fechaFin(viajeRequestDTO.getFechaFin())
                 .pais(viajeRequestDTO.getPais())
                 .ciudad(viajeRequestDTO.getCiudad())
+                .estadoEnum(EstadosViajeEnum.RESERVADO)
                 .build();
 
-        viaje.cambiarEstado(new EstadoReservado());
+        viaje.inicializarEstado(estadosViaje);
         Viaje savedViaje = viajeRepository.save(viaje);
 
         transaccionService.generarFactura(savedViaje, DocumentoEnum.ANTICIPO);
@@ -89,6 +94,7 @@ public class ViajeService {
 
     public ViajeResponseDTO confirmarViaje(Integer viajeId) {
         Viaje viaje = obtenerViajeGuiaAutorizado(viajeId);
+        viaje.inicializarEstado(estadosViaje);
         viaje.confirmar();
         Viaje savedViaje = viajeRepository.save(viaje);
 
@@ -99,6 +105,7 @@ public class ViajeService {
         Viaje viaje = viajeRepository
                 .findById(viajeId)
                 .orElseThrow(() -> new BadRequestException("El viaje no existe"));
+        viaje.inicializarEstado(estadosViaje);
 
         Usuario usuario = usuarioService.obtenerAutenticado();
 
@@ -120,6 +127,7 @@ public class ViajeService {
 
     public ViajeResponseDTO concluirViaje(Integer viajeId) {
         Viaje viaje = obtenerViajeGuiaAutorizado(viajeId);
+        viaje.inicializarEstado(estadosViaje);
         viaje.concluir();
         Viaje savedViaje = viajeRepository.save(viaje);
 

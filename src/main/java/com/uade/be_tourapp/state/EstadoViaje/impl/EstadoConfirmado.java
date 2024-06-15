@@ -1,13 +1,20 @@
 package com.uade.be_tourapp.state.EstadoViaje.impl;
 
 import com.uade.be_tourapp.entity.Viaje;
+import com.uade.be_tourapp.enums.DocumentoEnum;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
+import com.uade.be_tourapp.service.TransaccionService;
 import com.uade.be_tourapp.state.EstadoViaje.EstadoViaje;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EstadoConfirmado extends EstadoViaje {
-    public EstadoConfirmado() {
+    private final TransaccionService transaccionService;
+
+    public EstadoConfirmado(TransaccionService transaccionService) {
         super(EstadosViajeEnum.CONFIRMADO);
+        this.transaccionService = transaccionService;
     }
 
     public void confirmar(Viaje viaje) {
@@ -15,11 +22,12 @@ public class EstadoConfirmado extends EstadoViaje {
     }
 
     public void cancelar(Viaje viaje) {
-        viaje.cambiarEstado(new EstadoCancelado());
+        viaje.cambiarEstado(EstadosViajeEnum.CANCELADO);
     }
 
     public void concluir(Viaje viaje) {
-        viaje.cambiarEstado(new EstadoConcluido());
+        transaccionService.generarFactura(viaje, DocumentoEnum.FINAL);
+        viaje.cambiarEstado(EstadosViajeEnum.CONCLUIDO);
     }
 
     public void notificar(Viaje viaje) {
