@@ -2,6 +2,7 @@ package com.uade.be_tourapp.state.EstadoViaje;
 
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
+import com.uade.be_tourapp.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,8 +11,17 @@ import lombok.Getter;
 public abstract class EstadoViaje {
     private final EstadosViajeEnum nombre;
 
-    abstract public void confirmar(Viaje viaje);
-    abstract public void cancelar(Viaje viaje);
-    abstract public void concluir(Viaje viaje);
+    public void confirmar(Viaje viaje) {
+        throw new BadRequestException("No se puede confirmar el viaje.");
+    }
+
+    public void cancelar(Viaje viaje) {
+        throw new BadRequestException("No se puede cancelar el viaje.");
+    }
+
+    public void concluir(Viaje viaje) {
+        throw new BadRequestException("No se puede concluir el viaje.");
+    }
+
     abstract public void notificar(Viaje viaje);
 }
