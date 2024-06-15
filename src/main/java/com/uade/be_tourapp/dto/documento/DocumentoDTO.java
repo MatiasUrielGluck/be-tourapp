@@ -1,4 +1,4 @@
-package com.uade.be_tourapp.dto;
+package com.uade.be_tourapp.dto.documento;
 
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.DocumentoEnum;

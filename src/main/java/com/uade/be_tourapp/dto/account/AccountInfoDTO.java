@@ -1,4 +1,4 @@
-package com.uade.be_tourapp.dto;
+package com.uade.be_tourapp.dto.account;
 
 import com.uade.be_tourapp.enums.GenerosEnum;
 import lombok.Builder;

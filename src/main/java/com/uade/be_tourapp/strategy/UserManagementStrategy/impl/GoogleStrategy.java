@@ -1,7 +1,7 @@
 package com.uade.be_tourapp.strategy.UserManagementStrategy.impl;
 
-import com.uade.be_tourapp.dto.LoginRequestDTO;
-import com.uade.be_tourapp.dto.RegistroRequestDTO;
+import com.uade.be_tourapp.dto.auth.LoginRequestDTO;
+import com.uade.be_tourapp.dto.auth.RegistroRequestDTO;
 import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.enums.AuthStrategiesEnum;
 import com.uade.be_tourapp.repository.UsuarioRepository;

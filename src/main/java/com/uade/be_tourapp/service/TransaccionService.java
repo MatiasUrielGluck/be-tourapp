@@ -1,6 +1,6 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.dto.FacturaDTO;
+import com.uade.be_tourapp.dto.documento.FacturaDTO;
 import com.uade.be_tourapp.dto.GenericResponseDTO;
 import com.uade.be_tourapp.entity.Devolucion;
 import com.uade.be_tourapp.entity.Factura;

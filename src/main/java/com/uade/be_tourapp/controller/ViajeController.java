@@ -1,7 +1,7 @@
 package com.uade.be_tourapp.controller;
 
-import com.uade.be_tourapp.dto.ViajeRequestDTO;
-import com.uade.be_tourapp.dto.ViajeResponseDTO;
+import com.uade.be_tourapp.dto.viaje.ViajeRequestDTO;
+import com.uade.be_tourapp.dto.viaje.ViajeResponseDTO;
 import com.uade.be_tourapp.service.ViajeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

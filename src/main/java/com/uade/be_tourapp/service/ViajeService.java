@@ -1,7 +1,7 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.dto.ViajeRequestDTO;
-import com.uade.be_tourapp.dto.ViajeResponseDTO;
+import com.uade.be_tourapp.dto.viaje.ViajeRequestDTO;
+import com.uade.be_tourapp.dto.viaje.ViajeResponseDTO;
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;
 import com.uade.be_tourapp.entity.Usuario;

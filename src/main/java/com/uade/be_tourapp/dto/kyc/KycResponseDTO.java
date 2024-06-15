@@ -1,4 +1,4 @@
-package com.uade.be_tourapp.dto;
+package com.uade.be_tourapp.dto.kyc;
 
 import lombok.Builder;
 import lombok.Data;

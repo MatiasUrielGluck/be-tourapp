@@ -1,4 +1,4 @@
-package com.uade.be_tourapp.dto;
+package com.uade.be_tourapp.dto.kyc;
 
 import com.uade.be_tourapp.enums.GenerosEnum;
 import com.uade.be_tourapp.enums.RolUsuarioEnum;

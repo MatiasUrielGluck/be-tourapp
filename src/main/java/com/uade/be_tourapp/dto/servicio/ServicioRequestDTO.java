@@ -1,15 +1,20 @@
-package com.uade.be_tourapp.dto;
+package com.uade.be_tourapp.dto.servicio;
 
 import com.uade.be_tourapp.enums.TipoServicioEnum;
-import lombok.Builder;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Builder
-public class ServicioResponseDTO {
-    private Integer id;
+public class ServicioRequestDTO {
+    @NotNull
     private TipoServicioEnum tipo;
+
+    @NotNull
     private Double precio;
+
+    @NotNull
     private String pais;
+
+    @NotNull
     private String ciudad;
 }

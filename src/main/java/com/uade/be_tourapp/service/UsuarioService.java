@@ -1,6 +1,13 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.dto.*;
+import com.uade.be_tourapp.dto.account.AccountInfoDTO;
+import com.uade.be_tourapp.dto.auth.LoginRequestDTO;
+import com.uade.be_tourapp.dto.auth.LoginResponseDTO;
+import com.uade.be_tourapp.dto.auth.RegistroRequestDTO;
+import com.uade.be_tourapp.dto.auth.RegistroResponseDTO;
+import com.uade.be_tourapp.dto.kyc.KycGuiaRequestDTO;
+import com.uade.be_tourapp.dto.kyc.KycRequestDTO;
+import com.uade.be_tourapp.dto.kyc.KycResponseDTO;
 import com.uade.be_tourapp.entity.Credencial;
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Usuario;
