@@ -119,7 +119,7 @@ public class ViajeService {
             }
         }
 
-        viaje.cancelar();
+        viaje.cancelar(usuario);
         Viaje savedViaje = viajeRepository.save(viaje);
 
         return generarResponse(savedViaje);

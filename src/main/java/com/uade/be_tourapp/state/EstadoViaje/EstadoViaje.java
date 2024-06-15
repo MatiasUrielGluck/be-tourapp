@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.state.EstadoViaje;
 
+import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
@@ -15,7 +16,7 @@ public abstract class EstadoViaje {
         throw new BadRequestException("No se puede confirmar el viaje.");
     }
 
-    public void cancelar(Viaje viaje) {
+    public void cancelar(Viaje viaje, Usuario cancelador) {
         throw new BadRequestException("No se puede cancelar el viaje.");
     }
 

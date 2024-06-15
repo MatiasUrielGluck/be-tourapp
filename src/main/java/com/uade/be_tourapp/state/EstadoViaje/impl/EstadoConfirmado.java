@@ -1,5 +1,7 @@
 package com.uade.be_tourapp.state.EstadoViaje.impl;
 
+import com.uade.be_tourapp.entity.Guia;
+import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.DocumentoEnum;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
@@ -17,7 +19,13 @@ public class EstadoConfirmado extends EstadoViaje {
     }
 
     @Override
-    public void cancelar(Viaje viaje) {
+    public void cancelar(Viaje viaje, Usuario cancelador) {
+        if (cancelador.getClass() == Guia.class) {
+            transaccionService.generarDevolucion(viaje);
+        } else {
+            transaccionService.generarFactura(viaje, DocumentoEnum.PENALIZACION);
+        }
+
         viaje.cambiarEstado(EstadosViajeEnum.CANCELADO);
     }
 

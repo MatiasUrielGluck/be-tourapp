@@ -42,7 +42,7 @@ public class Factura extends Documento {
     }
 
     public Double calcularComision() {
-        if (getMotivo() == DocumentoEnum.ANTICIPO) return 0.0;
+        if (getMotivo() == DocumentoEnum.ANTICIPO || getMotivo() == DocumentoEnum.PENALIZACION) return 0.0;
         return getPrecio() * porcentajeComision;
     }
 
@@ -50,6 +50,7 @@ public class Factura extends Documento {
         return getViaje().getServicio().getPrecio() * porcentajeReserva;
     }
 
+    @Override
     public Double calcularTotal() {
         if (getMotivo() == DocumentoEnum.ANTICIPO) return calcularReserva();
         return getPrecio() - calcularReserva() + calcularComision();

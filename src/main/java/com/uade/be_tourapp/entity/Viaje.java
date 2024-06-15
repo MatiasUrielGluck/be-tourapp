@@ -75,8 +75,8 @@ public class Viaje {
         this.estado.confirmar(this);
     }
 
-    public void cancelar() {
-        this.estado.cancelar(this);
+    public void cancelar(Usuario cancelador) {
+        this.estado.cancelar(this, cancelador);
     }
 
     public void concluir() {

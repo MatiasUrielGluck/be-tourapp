@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorColumn(name = "tipo",
         discriminatorType = DiscriminatorType.STRING)
 
-public class Documento {
+public abstract class Documento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,4 +26,6 @@ public class Documento {
     @ManyToOne
     @JoinColumn(name = "viaje_id", referencedColumnName = "id")
     private Viaje viaje;
+
+    public abstract Double calcularTotal();
 }
