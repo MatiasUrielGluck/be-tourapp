@@ -4,6 +4,7 @@ import com.uade.be_tourapp.dto.documento.FacturaDTO;
 import com.uade.be_tourapp.dto.GenericResponseDTO;
 import com.uade.be_tourapp.entity.Devolucion;
 import com.uade.be_tourapp.entity.Factura;
+import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.DocumentoEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
@@ -15,17 +16,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TransaccionService {
     private final DocumentoRepository documentoRepository;
     private final FacturaRepository facturaRepository;
     private final DevolucionRepository devolucionRepository;
+    private final UsuarioService usuarioService;
 
-    public TransaccionService(DocumentoRepository documentoRepository, FacturaRepository facturaRepository, DevolucionRepository devolucionRepository) {
+    public TransaccionService(DocumentoRepository documentoRepository, FacturaRepository facturaRepository, DevolucionRepository devolucionRepository, UsuarioService usuarioService) {
         this.documentoRepository = documentoRepository;
         this.facturaRepository = facturaRepository;
         this.devolucionRepository = devolucionRepository;
+        this.usuarioService = usuarioService;
     }
 
     public FacturaDTO generarFactura(Viaje viaje, DocumentoEnum tipo) {
@@ -50,6 +54,11 @@ public class TransaccionService {
 
     public GenericResponseDTO pagarFactura(Integer id) {
         Factura factura = (Factura) documentoRepository.findById(id).orElseThrow(() -> new BadRequestException("Factura inexistente."));
+
+        Usuario turista = usuarioService.obtenerAutenticado();
+        if (!Objects.equals(factura.getViaje().getTurista().getId(), turista.getId())) {
+            throw new BadRequestException("Acceso denegado.");
+        }
 
         if (factura.getPagada()) {
             throw new BadRequestException("La factura ya se encuentra pagada.");
