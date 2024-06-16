@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -14,7 +14,7 @@ public class KycGuiaRequestDTO {
     private Long numero;
 
     @NotNull
-    private Date vencimiento;
+    private LocalDate vencimiento;
 
     @NotNull @NotEmpty
     private String foto;

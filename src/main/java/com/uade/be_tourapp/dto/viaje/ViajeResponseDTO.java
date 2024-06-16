@@ -4,7 +4,7 @@ import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -13,8 +13,8 @@ public class ViajeResponseDTO {
     private Integer turistaId;
     private Integer guiaId;
     private Integer servicioId;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private String pais;
     private String ciudad;
     private EstadosViajeEnum estado;

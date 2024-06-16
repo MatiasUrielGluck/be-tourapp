@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -16,10 +16,10 @@ public class ViajeRequestDTO {
     private Integer servicioId;
 
     @NotNull
-    private Date fechaInicio;
+    private LocalDate fechaInicio;
 
     @NotNull
-    private Date fechaFin;
+    private LocalDate fechaFin;
 
     @NotNull
     private String pais;

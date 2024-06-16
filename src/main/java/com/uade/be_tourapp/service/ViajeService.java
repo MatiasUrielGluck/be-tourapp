@@ -72,6 +72,10 @@ public class ViajeService {
         Guia guia = usuarioService.getGuiaById(viajeRequestDTO.getGuiaId());
         Servicio servicio = servicioRepository.findById(viajeRequestDTO.getServicioId()).orElseThrow(() -> new BadRequestException("El servicio no existe."));
 
+        if (!usuarioService.isGuiaDisponible(guia.getId(), viajeRequestDTO.getFechaInicio(), viajeRequestDTO.getFechaFin())) {
+            throw new BadRequestException("El guía está ocupado.");
+        }
+
         Viaje viaje = Viaje.builder()
                 .turista(turista)
                 .guia(guia)

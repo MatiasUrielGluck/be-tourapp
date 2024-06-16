@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Builder
@@ -21,7 +21,7 @@ public class Credencial {
     private Long numero;
 
     @Column(name = "vencimiento", nullable = false)
-    private Date vencimiento;
+    private LocalDate vencimiento;
 
     @Column(name = "foto", nullable = false)
     private String foto;
