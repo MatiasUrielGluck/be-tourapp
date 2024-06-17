@@ -12,5 +12,8 @@ public class ReviewResponseDTO {
     private Integer id;
     private Integer viajeId;
     private String comentario;
-    private Integer puntuacion;
+    private Double puntuacion;
+
+    private String pais;
+    private String ciudad;
 }

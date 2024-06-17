@@ -1,4 +1,4 @@
-package com.uade.be_tourapp.utils;
+package com.uade.be_tourapp.utils.specification;
 
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;

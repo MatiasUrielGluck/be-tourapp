@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.dto.usuario;
 
+import com.uade.be_tourapp.dto.review.ReviewResponseDTO;
 import com.uade.be_tourapp.dto.servicio.ServicioResponseDTO;
 import com.uade.be_tourapp.entity.Credencial;
 import com.uade.be_tourapp.enums.GenerosEnum;
@@ -22,4 +23,6 @@ public class GuiaResponseDTO {
     private String foto;
     private Credencial credencial;
     private List<ServicioResponseDTO> servicios;
+    private Double puntuacion;
+    private List<ReviewResponseDTO> reviews;
 }

@@ -11,10 +11,8 @@ import com.uade.be_tourapp.dto.kyc.KycRequestDTO;
 import com.uade.be_tourapp.dto.kyc.KycResponseDTO;
 import com.uade.be_tourapp.dto.usuario.FiltroDTO;
 import com.uade.be_tourapp.dto.usuario.GuiaResponseDTO;
-import com.uade.be_tourapp.entity.Credencial;
-import com.uade.be_tourapp.entity.Guia;
-import com.uade.be_tourapp.entity.Usuario;
-import com.uade.be_tourapp.entity.Viaje;
+import com.uade.be_tourapp.dto.usuario.GuiaResponseOptions;
+import com.uade.be_tourapp.entity.*;
 import com.uade.be_tourapp.enums.AuthStrategiesEnum;
 import com.uade.be_tourapp.enums.RolUsuarioEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
@@ -24,8 +22,10 @@ import com.uade.be_tourapp.repository.UsuarioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import com.uade.be_tourapp.strategy.UserManagementStrategy.AuthStrategy;
 import com.uade.be_tourapp.utils.Base64Utils;
-import com.uade.be_tourapp.utils.ViajeSpecification;
+import com.uade.be_tourapp.utils.specification.ViajeSpecification;
 import io.micrometer.common.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.uade.be_tourapp.utils.GuiaSpecification.*;
+import static com.uade.be_tourapp.utils.specification.GuiaSpecification.*;
 
 @Service
 public class UsuarioService {
@@ -48,6 +48,7 @@ public class UsuarioService {
     private final GuiaRepository guiaRepository;
     private final ViajeRepository viajeRepository;
     private AuthStrategy authStrategy;
+    private ReviewService reviewService;
 
     public UsuarioService(List<AuthStrategy> authStrategies, JwtService jwtService, UsuarioRepository usuarioRepository, CredencialService credencialService, GuiaRepository guiaRepository, ViajeRepository viajeRepository) {
         this.authStrategies = authStrategies;
@@ -56,6 +57,11 @@ public class UsuarioService {
         this.credencialService = credencialService;
         this.guiaRepository = guiaRepository;
         this.viajeRepository = viajeRepository;
+    }
+
+    @Autowired
+    public void setReviewService(@Lazy ReviewService reviewService) {
+        this.reviewService = reviewService;
     }
 
     public void cambiarAuthStrategy(AuthStrategiesEnum estrategia) {
@@ -168,7 +174,7 @@ public class UsuarioService {
         return viajes.isEmpty();
     }
 
-    public GuiaResponseDTO generarGuiaResponse(Guia guia) {
+    public GuiaResponseDTO generarGuiaResponse(Guia guia, GuiaResponseOptions options) {
         List<ServicioResponseDTO> servicios = guia
                 .getServicios()
                 .stream()
@@ -181,6 +187,9 @@ public class UsuarioService {
                         .build())
                 .toList();
 
+        List<Review> reviews = reviewService.obtenerReviewsGuia(guia.getId());
+        Double puntuacion = reviewService.calcularPuntuacionGuia(reviews);
+
         return GuiaResponseDTO.builder()
                 .id(guia.getId())
                 .nombre(guia.getNombre())
@@ -189,14 +198,20 @@ public class UsuarioService {
                 .genero(guia.getGenero())
                 .dni(guia.getDni())
                 .foto(guia.getFoto() != null ? Base64Utils.bytesToBase64(guia.getFoto()) : "")
-                .credencial(guia.getCredencial())
+                .credencial(options.getIncluirCredencial() ? guia.getCredencial() : null)
                 .servicios(servicios)
+                .puntuacion(puntuacion)
+                .reviews(options.getIncluirReviews() ? reviews.stream().map(Review::toDto).toList() : null)
                 .build();
     }
 
     public GuiaResponseDTO buscarGuia(Integer id) {
         Guia guia = getGuiaById(id);
-        return generarGuiaResponse(guia);
+        GuiaResponseOptions options = GuiaResponseOptions.builder()
+                .incluirCredencial(true)
+                .incluirReviews(true)
+                .build();
+        return generarGuiaResponse(guia, options);
     }
 
     public List<GuiaResponseDTO> buscarGuiasConFiltro(FiltroDTO filtroDTO) {
@@ -206,10 +221,16 @@ public class UsuarioService {
                 .and(StringUtils.isBlank(filtroDTO.getPais()) ? null : paisLikeInServicio(filtroDTO.getPais()))
                 .and(StringUtils.isBlank(filtroDTO.getCiudad()) ? null : ciudadLikeInServicio(filtroDTO.getCiudad()));
 
-        return guiaRepository.findAll(filtros)
-                .stream()
+        List<Guia> guias = guiaRepository.findAll(filtros);
+
+        // Filtro por disponibilidad
+        guias = guias.stream()
                 .filter(guia -> isGuiaDisponible(guia.getId(), filtroDTO.getFechaInicio(), filtroDTO.getFechaFin()))
-                .map(this::generarGuiaResponse)
+                .toList();
+
+        return guias
+                .stream()
+                .map(guia -> generarGuiaResponse(guia, new GuiaResponseOptions()))
                 .toList();
     }
 }

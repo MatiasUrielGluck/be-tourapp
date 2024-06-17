@@ -9,8 +9,11 @@ import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ReviewRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
+import com.uade.be_tourapp.utils.specification.ReviewSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -23,6 +26,27 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
+    }
+
+    public Double calcularPuntuacionGuia(List<Review> reviews) {
+        double puntuacion = 0.0;
+        if (reviews.isEmpty()) return 0.0;
+
+        for (Review review : reviews) {
+            puntuacion += review.getPuntuacion();
+        }
+
+        return puntuacion / reviews.size();
+    }
+
+    public List<Review> obtenerReviewsGuia(Integer guiaId) {
+        Specification<Review> spec = ReviewSpecification.reviewPorGuia(guiaId);
+        return reviewRepository.findAll(spec);
+    }
+
+    public Double calcularPuntuacionGuia(Integer guiaId) {
+        List<Review> reviews = obtenerReviewsGuia(guiaId);
+        return calcularPuntuacionGuia(reviews);
     }
 
     public ReviewResponseDTO crearReview(ReviewRequestDTO reviewRequestDTO) {

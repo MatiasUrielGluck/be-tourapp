@@ -16,5 +16,5 @@ public class ReviewRequestDTO {
     private String comentario;
 
     @NotNull
-    private Integer puntuacion;
+    private Double puntuacion;
 }

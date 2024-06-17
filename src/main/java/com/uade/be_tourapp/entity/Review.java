@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.dto.review.ReviewResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,20 @@ public class Review {
     private String comentario;
 
     @Column(name = "puntuacion")
-    private Integer puntuacion;
+    private Double puntuacion;
 
     @OneToOne
     @JoinColumn(name = "viaje_id", referencedColumnName = "id")
     private Viaje viaje;
+
+    public ReviewResponseDTO toDto() {
+        return ReviewResponseDTO.builder()
+                .id(id)
+                .viajeId(viaje.getId())
+                .comentario(comentario)
+                .puntuacion(puntuacion)
+                .pais(viaje.getServicio().getPais())
+                .ciudad(viaje.getServicio().getCiudad())
+                .build();
+    }
 }
