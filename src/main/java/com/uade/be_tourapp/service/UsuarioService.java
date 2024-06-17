@@ -23,6 +23,7 @@ import com.uade.be_tourapp.repository.GuiaRepository;
 import com.uade.be_tourapp.repository.UsuarioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import com.uade.be_tourapp.strategy.UserManagementStrategy.AuthStrategy;
+import com.uade.be_tourapp.utils.Base64Utils;
 import com.uade.be_tourapp.utils.ViajeSpecification;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,7 +32,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -106,7 +106,7 @@ public class UsuarioService {
         usuario.setGenero(input.getGenero());
         usuario.setDni(input.getDni());
         usuario.setNumTelefono(input.getNumTelefono());
-        usuario.setFoto(Base64.getMimeDecoder().decode(input.getFoto()));
+        usuario.setFoto(Base64Utils.base64ToBytes(input.getFoto()));
         usuario.setKycCompleted(input.getRol() != RolUsuarioEnum.GUIA);
 
         usuarioRepository.save(usuario);
@@ -120,7 +120,7 @@ public class UsuarioService {
         Credencial credencial = Credencial.builder()
                 .numero(input.getNumero())
                 .vencimiento(input.getVencimiento())
-                .foto(Base64.getMimeDecoder().decode(input.getFoto()))
+                .foto(Base64Utils.base64ToBytes(input.getFoto()))
                 .build();
 
         if (!credencialService.esCredencialValida(credencial)) throw new BadRequestException("La credencial proporcionada es inválida.");
@@ -149,7 +149,7 @@ public class UsuarioService {
                 .genero(usuario.getGenero())
                 .dni(usuario.getDni())
                 .numTelefono(usuario.getNumTelefono())
-                .foto(usuario.getFoto() != null ? new String(usuario.getFoto()) : "")
+                .foto(usuario.getFoto() != null ? Base64Utils.bytesToBase64(usuario.getFoto()) : "")
                 .kycCompleted(usuario.getKycCompleted())
                 .build();
     }
@@ -188,7 +188,7 @@ public class UsuarioService {
                 .email(guia.getEmail())
                 .genero(guia.getGenero())
                 .dni(guia.getDni())
-                .foto(guia.getFoto() != null ? new String(guia.getFoto()) : "")
+                .foto(guia.getFoto() != null ? Base64Utils.bytesToBase64(guia.getFoto()) : "")
                 .credencial(guia.getCredencial())
                 .servicios(servicios)
                 .build();
