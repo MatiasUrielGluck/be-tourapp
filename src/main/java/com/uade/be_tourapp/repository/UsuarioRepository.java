@@ -19,6 +19,6 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
                                    @Param("id") Integer id);
 
     Boolean existsByEmail(String email);
-    Boolean existsByDni(Integer dni);
+    Optional<Usuario> findByDni(Integer dni);
     Optional<Usuario> findByEmail(String email);
 }

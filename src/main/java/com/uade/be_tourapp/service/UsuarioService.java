@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.uade.be_tourapp.utils.GuiaSpecification.*;
 
@@ -93,7 +95,8 @@ public class UsuarioService {
     public KycResponseDTO generalKyc(KycRequestDTO input) {
         Usuario usuario = obtenerAutenticado();
 
-        if (usuarioRepository.existsByDni(input.getDni())) {
+        Optional<Usuario> dniExistente = usuarioRepository.findByDni(input.getDni());
+        if (dniExistente.isPresent() && !Objects.equals(dniExistente.get().getId(), usuario.getId())) {
             throw new BadRequestException("Ya existe un usuario con ese dni");
         }
 
