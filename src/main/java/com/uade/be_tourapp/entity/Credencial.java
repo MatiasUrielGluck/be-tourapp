@@ -1,9 +1,6 @@
 package com.uade.be_tourapp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +20,7 @@ public class Credencial {
     @Column(name = "vencimiento", nullable = false)
     private LocalDate vencimiento;
 
-    @Column(name = "foto", nullable = false)
+    @Lob
+    @Column(name = "foto", nullable = false, columnDefinition = "BLOB")
     private String foto;
 }
