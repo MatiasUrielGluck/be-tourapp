@@ -22,5 +22,5 @@ public class Credencial {
 
     @Lob
     @Column(name = "foto", nullable = false, columnDefinition = "BLOB")
-    private String foto;
+    private byte[] foto;
 }

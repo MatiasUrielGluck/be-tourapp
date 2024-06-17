@@ -31,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -119,7 +120,7 @@ public class UsuarioService {
         Credencial credencial = Credencial.builder()
                 .numero(input.getNumero())
                 .vencimiento(input.getVencimiento())
-                .foto(input.getFoto())
+                .foto(Base64.getMimeDecoder().decode(input.getFoto()))
                 .build();
 
         if (!credencialService.esCredencialValida(credencial)) throw new BadRequestException("La credencial proporcionada es inválida.");
