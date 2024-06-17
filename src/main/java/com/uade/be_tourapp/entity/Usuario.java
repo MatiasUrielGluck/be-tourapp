@@ -50,8 +50,9 @@ public class Usuario implements UserDetails {
     @Column(name = "num_telefono")
     private String numTelefono;
 
-    @Column(name = "foto")
-    private String foto;
+    @Lob
+    @Column(name = "foto", columnDefinition = "BLOB")
+    private byte[] foto;
 
     @Column(name = "kyc_completed", nullable = false)
     private Boolean kycCompleted;

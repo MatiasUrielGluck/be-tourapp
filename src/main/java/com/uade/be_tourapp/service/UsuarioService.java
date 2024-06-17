@@ -106,7 +106,7 @@ public class UsuarioService {
         usuario.setGenero(input.getGenero());
         usuario.setDni(input.getDni());
         usuario.setNumTelefono(input.getNumTelefono());
-        usuario.setFoto(input.getFoto());
+        usuario.setFoto(Base64.getMimeDecoder().decode(input.getFoto()));
         usuario.setKycCompleted(input.getRol() != RolUsuarioEnum.GUIA);
 
         usuarioRepository.save(usuario);
@@ -149,7 +149,7 @@ public class UsuarioService {
                 .genero(usuario.getGenero())
                 .dni(usuario.getDni())
                 .numTelefono(usuario.getNumTelefono())
-                .foto(usuario.getFoto())
+                .foto(usuario.getFoto() != null ? new String(usuario.getFoto()) : "")
                 .kycCompleted(usuario.getKycCompleted())
                 .build();
     }
@@ -188,7 +188,7 @@ public class UsuarioService {
                 .email(guia.getEmail())
                 .genero(guia.getGenero())
                 .dni(guia.getDni())
-                .foto(guia.getFoto())
+                .foto(guia.getFoto() != null ? new String(guia.getFoto()) : "")
                 .credencial(guia.getCredencial())
                 .servicios(servicios)
                 .build();
