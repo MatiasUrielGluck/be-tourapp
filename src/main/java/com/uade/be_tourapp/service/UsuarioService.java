@@ -1,6 +1,5 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.dto.servicio.ServicioResponseDTO;
 import com.uade.be_tourapp.dto.usuario.AccountInfoDTO;
 import com.uade.be_tourapp.dto.auth.LoginRequestDTO;
 import com.uade.be_tourapp.dto.auth.LoginResponseDTO;
@@ -175,18 +174,6 @@ public class UsuarioService {
     }
 
     public GuiaResponseDTO generarGuiaResponse(Guia guia, GuiaResponseOptions options) {
-        List<ServicioResponseDTO> servicios = guia
-                .getServicios()
-                .stream()
-                .map(servicio -> ServicioResponseDTO.builder()
-                        .id(servicio.getId())
-                        .tipo(servicio.getTipo())
-                        .precio(servicio.getPrecio())
-                        .ciudad(servicio.getCiudad())
-                        .pais(servicio.getPais())
-                        .build())
-                .toList();
-
         List<Review> reviews = reviewService.obtenerReviewsGuia(guia.getId());
         Double puntuacion = reviewService.calcularPuntuacionGuia(reviews);
 
@@ -199,7 +186,7 @@ public class UsuarioService {
                 .dni(guia.getDni())
                 .foto(guia.getFoto() != null ? Base64Utils.bytesToBase64(guia.getFoto()) : "")
                 .credencial(options.getIncluirCredencial() ? guia.getCredencial() : null)
-                .servicios(servicios)
+                .servicios(guia.getServicios().stream().map(Servicio::toDto).toList())
                 .puntuacion(puntuacion)
                 .reviews(options.getIncluirReviews() ? reviews.stream().map(Review::toDto).toList() : null)
                 .build();

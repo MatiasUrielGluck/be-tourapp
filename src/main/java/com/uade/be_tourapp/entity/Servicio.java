@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.dto.servicio.ServicioResponseDTO;
 import com.uade.be_tourapp.enums.TipoServicioEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,14 @@ public class Servicio {
     @ManyToOne
     @JoinColumn(name = "guia_id", referencedColumnName = "id")
     private Guia guia;
+
+    public ServicioResponseDTO toDto() {
+        return ServicioResponseDTO.builder()
+                .id(this.id)
+                .tipo(this.tipo)
+                .precio(this.precio)
+                .pais(this.pais)
+                .ciudad(this.ciudad)
+                .build();
+    }
 }
