@@ -28,6 +28,5 @@ public class KycRequestDTO {
     @NotNull @NotEmpty
     private String numTelefono;
 
-    @NotNull @NotEmpty
     private String foto;
 }
