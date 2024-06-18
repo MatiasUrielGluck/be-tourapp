@@ -4,6 +4,7 @@ import com.uade.be_tourapp.entity.Notificacion;
 import com.uade.be_tourapp.entity.Viaje;
 import com.uade.be_tourapp.enums.DocumentoEnum;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
+import com.uade.be_tourapp.enums.notificacion.AccionEnum;
 import com.uade.be_tourapp.enums.notificacion.NotificacionStrategyEnum;
 import com.uade.be_tourapp.service.NotificacionService;
 import com.uade.be_tourapp.service.TransaccionService;
@@ -32,6 +33,7 @@ public class EstadoInicializado extends EstadoViaje {
         Notificacion notificacion = Notificacion.builder()
                 .usuario(viaje.getGuia())
                 .mensaje("¡" + viaje.getTurista().getNombre() + " te acaba de reservar un servicio!<br>Presioná para ver más información.")
+                .accion(AccionEnum.RESERVA_RECIBIDA)
                 .fecha(LocalDateTime.now())
                 .visto(false)
                 .build();
