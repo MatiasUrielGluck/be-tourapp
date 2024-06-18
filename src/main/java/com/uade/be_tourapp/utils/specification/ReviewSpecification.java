@@ -14,4 +14,11 @@ public class ReviewSpecification {
             return builder.equal(viaje.get("guia").get("id"), guiaId);
         };
     }
+
+    public static Specification<Review> reviewPorTurista(Integer turistaId) {
+        return (root, query, builder) -> {
+            Join<Review, Viaje> viaje = root.join("viaje");
+            return builder.equal(viaje.get("turista").get("id"), turistaId);
+        };
+    }
 }

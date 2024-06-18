@@ -21,11 +21,13 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ViajeRepository viajeRepository;
     private final UsuarioService usuarioService;
+    private final TrofeoService trofeoService;
 
-    public ReviewService(ReviewRepository reviewRepository, ViajeRepository viajeRepository, UsuarioService usuarioService) {
+    public ReviewService(ReviewRepository reviewRepository, ViajeRepository viajeRepository, UsuarioService usuarioService, TrofeoService trofeoService) {
         this.reviewRepository = reviewRepository;
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
+        this.trofeoService = trofeoService;
     }
 
     public Double calcularPuntuacionGuia(List<Review> reviews) {
@@ -37,6 +39,11 @@ public class ReviewService {
         }
 
         return puntuacion / reviews.size();
+    }
+
+    public List<Review> obtenerReviewsTurista(Integer turistaId) {
+        Specification<Review> spec = ReviewSpecification.reviewPorTurista(turistaId);
+        return reviewRepository.findAll(spec);
     }
 
     public List<Review> obtenerReviewsGuia(Integer guiaId) {
@@ -67,6 +74,17 @@ public class ReviewService {
                 .build();
 
         Review guardada = reviewRepository.save(review);
+
+        // Trofeos
+        //Guia
+        List<Review> reviews = obtenerReviewsGuia(viaje.getGuia().getId());
+        Double puntuacion = calcularPuntuacionGuia(reviews);
+        trofeoService.comprobarTrofeosGuia(viaje.getGuia(), puntuacion, reviews.size());
+
+        // Turista
+        List<Review> reviewsTurista = obtenerReviewsTurista(viaje.getTurista().getId());
+        trofeoService.comprobarTrofeosTurista(viaje.getTurista(), reviewsTurista.size());
+
         return ReviewResponseDTO.builder()
                 .id(guardada.getId())
                 .comentario(guardada.getComentario())
