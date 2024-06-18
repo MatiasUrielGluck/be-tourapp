@@ -14,6 +14,8 @@ import com.uade.be_tourapp.dto.usuario.GuiaResponseOptions;
 import com.uade.be_tourapp.entity.*;
 import com.uade.be_tourapp.enums.AuthStrategiesEnum;
 import com.uade.be_tourapp.enums.RolUsuarioEnum;
+import com.uade.be_tourapp.enums.notificacion.MensajesEnum;
+import com.uade.be_tourapp.enums.notificacion.NotificacionStrategyEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.exception.UserAlreadyExistsException;
 import com.uade.be_tourapp.repository.GuiaRepository;
@@ -31,6 +33,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,6 +51,7 @@ public class UsuarioService {
     private final ViajeRepository viajeRepository;
     private AuthStrategy authStrategy;
     private ReviewService reviewService;
+    private NotificacionService notificacionService;
 
     public UsuarioService(List<AuthStrategy> authStrategies, JwtService jwtService, UsuarioRepository usuarioRepository, CredencialService credencialService, GuiaRepository guiaRepository, ViajeRepository viajeRepository) {
         this.authStrategies = authStrategies;
@@ -61,6 +65,11 @@ public class UsuarioService {
     @Autowired
     public void setReviewService(@Lazy ReviewService reviewService) {
         this.reviewService = reviewService;
+    }
+
+    @Autowired
+    public void setNotificacionService(@Lazy NotificacionService notificacionService) {
+        this.notificacionService = notificacionService;
     }
 
     public void cambiarAuthStrategy(AuthStrategiesEnum estrategia) {
@@ -139,6 +148,16 @@ public class UsuarioService {
         guia.setCredencial(credencial);
         guia.setKycCompleted(true);
         usuarioRepository.save(guia);
+
+        // Generar la push notification
+        Notificacion notificacion = Notificacion.builder()
+                .usuario(guia)
+                .mensaje(MensajesEnum.GUIA_READY.getMensaje())
+                .fecha(LocalDateTime.now())
+                .visto(false)
+                .build();
+        notificacionService.cambiarEstrategia(NotificacionStrategyEnum.PUSH);
+        notificacionService.notificar(notificacion);
 
         return KycResponseDTO.builder()
                 .kycCompleted(true)

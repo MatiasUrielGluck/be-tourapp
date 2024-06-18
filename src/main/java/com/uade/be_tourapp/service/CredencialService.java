@@ -1,7 +1,7 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.adapter.AdapterIAVerificador;
-import com.uade.be_tourapp.adapter.impl.AdapterIAVerificadorMock;
+import com.uade.be_tourapp.adapter.AdapterIAVerificador.AdapterIAVerificador;
+import com.uade.be_tourapp.adapter.AdapterIAVerificador.impl.AdapterIAVerificadorMock;
 import com.uade.be_tourapp.entity.Credencial;
 import com.uade.be_tourapp.repository.CredencialRepository;
 import org.springframework.stereotype.Service;

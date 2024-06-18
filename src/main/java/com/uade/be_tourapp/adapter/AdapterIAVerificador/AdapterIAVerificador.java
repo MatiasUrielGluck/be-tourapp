@@ -1,4 +1,4 @@
-package com.uade.be_tourapp.adapter;
+package com.uade.be_tourapp.adapter.AdapterIAVerificador;
 
 import com.uade.be_tourapp.entity.Credencial;
 
