@@ -10,6 +10,4 @@ public class EstadoCancelado extends EstadoViaje {
     public EstadoCancelado() {
         super(EstadosViajeEnum.CANCELADO);
     }
-
-    public void notificar(Viaje viaje) {}
 }

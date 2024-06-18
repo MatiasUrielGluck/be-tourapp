@@ -34,6 +34,4 @@ public class EstadoConfirmado extends EstadoViaje {
         transaccionService.generarFactura(viaje, DocumentoEnum.FINAL);
         viaje.cambiarEstado(EstadosViajeEnum.CONCLUIDO);
     }
-
-    public void notificar(Viaje viaje) {}
 }

@@ -30,6 +30,4 @@ public class EstadoReservado extends EstadoViaje {
 
         viaje.cambiarEstado(EstadosViajeEnum.CANCELADO);
     }
-
-    public void notificar(Viaje viaje) {}
 }

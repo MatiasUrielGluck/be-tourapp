@@ -10,6 +10,4 @@ public class EstadoConcluido extends EstadoViaje {
     public EstadoConcluido() {
         super(EstadosViajeEnum.CONCLUIDO);
     }
-
-    public void notificar(Viaje viaje) {}
 }

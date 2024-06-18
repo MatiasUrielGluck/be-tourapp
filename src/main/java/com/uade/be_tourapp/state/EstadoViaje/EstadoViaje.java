@@ -27,6 +27,4 @@ public abstract class EstadoViaje {
     public void concluir(Viaje viaje) {
         throw new BadRequestException("No se puede concluir el viaje.");
     }
-
-    abstract public void notificar(Viaje viaje);
 }

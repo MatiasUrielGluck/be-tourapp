@@ -42,6 +42,4 @@ public class EstadoInicializado extends EstadoViaje {
 
         viaje.cambiarEstado(EstadosViajeEnum.RESERVADO);
     }
-
-    public void notificar(Viaje viaje) {}
 }
