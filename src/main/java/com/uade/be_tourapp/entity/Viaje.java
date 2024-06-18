@@ -71,6 +71,10 @@ public class Viaje {
                 .orElseThrow();
     }
 
+    public void reservar() {
+        this.estado.reservar(this);
+    }
+
     public void confirmar() {
         this.estado.confirmar(this);
     }

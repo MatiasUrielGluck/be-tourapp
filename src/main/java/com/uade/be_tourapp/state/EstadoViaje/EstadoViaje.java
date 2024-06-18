@@ -12,6 +12,10 @@ import lombok.Getter;
 public abstract class EstadoViaje {
     private final EstadosViajeEnum nombre;
 
+    public void reservar(Viaje viaje)  {
+        throw new BadRequestException("No se puede inicializar el viaje.");
+    }
+
     public void confirmar(Viaje viaje) {
         throw new BadRequestException("No se puede confirmar el viaje.");
     }

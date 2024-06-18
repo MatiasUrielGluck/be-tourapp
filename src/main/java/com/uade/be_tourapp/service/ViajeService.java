@@ -6,7 +6,6 @@ import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;
 import com.uade.be_tourapp.entity.Usuario;
 import com.uade.be_tourapp.entity.Viaje;
-import com.uade.be_tourapp.enums.DocumentoEnum;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.repository.ServicioRepository;
@@ -23,14 +22,12 @@ public class ViajeService {
     private final ViajeRepository viajeRepository;
     private final UsuarioService usuarioService;
     private final ServicioRepository servicioRepository;
-    private final TransaccionService transaccionService;
     private final List<EstadoViaje> estadosViaje;
 
-    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, TransaccionService transaccionService, List<EstadoViaje> estadosViaje) {
+    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, List<EstadoViaje> estadosViaje) {
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
         this.servicioRepository = servicioRepository;
-        this.transaccionService = transaccionService;
         this.estadosViaje = estadosViaje;
     }
 
@@ -84,15 +81,16 @@ public class ViajeService {
                 .fechaFin(viajeRequestDTO.getFechaFin())
                 .pais(viajeRequestDTO.getPais())
                 .ciudad(viajeRequestDTO.getCiudad())
-                .estadoEnum(EstadosViajeEnum.RESERVADO)
+                .estadoEnum(EstadosViajeEnum.INICIALIZADO)
                 .build();
 
-        viaje.inicializarEstado(estadosViaje);
         Viaje savedViaje = viajeRepository.save(viaje);
+        savedViaje.inicializarEstado(estadosViaje);
+        savedViaje.reservar();
 
-        transaccionService.generarFactura(savedViaje, DocumentoEnum.ANTICIPO);
+        Viaje viajeReservado = viajeRepository.save(savedViaje);
 
-        return generarResponse(savedViaje);
+        return generarResponse(viajeReservado);
     }
 
     public ViajeResponseDTO confirmarViaje(Integer viajeId) {
