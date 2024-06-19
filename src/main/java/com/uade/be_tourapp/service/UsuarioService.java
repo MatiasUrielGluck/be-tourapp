@@ -241,6 +241,16 @@ public class UsuarioService {
 
         List<Guia> guias = guiaRepository.findAll(filtros);
 
+        // Filtro por idiomas
+        if (filtroDTO.getIdiomas() != null && !filtroDTO.getIdiomas().isEmpty()) {
+            guias = guias.stream()
+                    .filter(guia -> {
+                        List<String> idiomas = guia.getIdiomas().stream().map(Idioma::getNombre).toList();
+                        return new HashSet<>(idiomas).containsAll(filtroDTO.getIdiomas());
+                    })
+                    .toList();
+        }
+
         // Filtro por disponibilidad
         guias = guias.stream()
                 .filter(guia -> isGuiaDisponible(guia.getId(), filtroDTO.getFechaInicio(), filtroDTO.getFechaFin()))

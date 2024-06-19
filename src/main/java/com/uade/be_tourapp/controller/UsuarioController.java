@@ -86,6 +86,7 @@ public class UsuarioController {
             @RequestParam(required = false) String pais,
             @RequestParam(required = false) String ciudad,
             @RequestParam(required = false) TipoServicioEnum tipoServicio,
+            @RequestParam(required = false) List<String> idiomas,
             @RequestParam LocalDate fechaInicio,
             @RequestParam LocalDate fechaFin
             ) {
@@ -98,6 +99,7 @@ public class UsuarioController {
                 .tipoServicio(tipoServicio)
                 .fechaInicio(fechaInicio)
                 .fechaFin(fechaFin)
+                .idiomas(idiomas)
                 .build();
 
         return ResponseEntity.ok(usuarioService.buscarGuiasConFiltro(filtros));

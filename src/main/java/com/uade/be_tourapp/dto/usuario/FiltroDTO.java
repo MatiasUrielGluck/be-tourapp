@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Builder
@@ -18,4 +19,5 @@ public class FiltroDTO {
     private TipoServicioEnum tipoServicio;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private List<String> idiomas;
 }
