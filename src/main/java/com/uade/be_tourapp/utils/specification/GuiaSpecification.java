@@ -2,6 +2,7 @@ package com.uade.be_tourapp.utils.specification;
 
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;
+import com.uade.be_tourapp.enums.TipoServicioEnum;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -39,6 +40,16 @@ public class GuiaSpecification {
         return (root, query, builder) -> {
             Join<Guia, Servicio> guiaServicioJoin = root.join("servicios");
             return builder.like(guiaServicioJoin.get("ciudad"), "%" + ciudad + "%");
+        };
+    }
+
+    /*
+        Filtra por tipo de servicio
+     */
+    public static Specification<Guia> tipoServicioInServicio(TipoServicioEnum tipo) {
+        return (root, query, builder) -> {
+            Join<Guia, Servicio> guiaServicioJoin = root.join("servicios");
+            return builder.equal(guiaServicioJoin.get("tipo"), tipo);
         };
     }
 }
