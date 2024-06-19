@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,4 +19,7 @@ public class KycGuiaRequestDTO {
 
     @NotNull @NotEmpty
     private String foto;
+
+    @NotNull
+    private List<String> idiomas;
 }

@@ -19,6 +19,7 @@ import com.uade.be_tourapp.enums.notificacion.NotificacionStrategyEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
 import com.uade.be_tourapp.exception.UserAlreadyExistsException;
 import com.uade.be_tourapp.repository.GuiaRepository;
+import com.uade.be_tourapp.repository.IdiomaRepository;
 import com.uade.be_tourapp.repository.UsuarioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import com.uade.be_tourapp.strategy.UserManagementStrategy.AuthStrategy;
@@ -34,9 +35,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static com.uade.be_tourapp.utils.specification.GuiaSpecification.*;
 
@@ -44,6 +43,7 @@ import static com.uade.be_tourapp.utils.specification.GuiaSpecification.*;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final IdiomaRepository idiomaRepository;
     private final JwtService jwtService;
     private final List<AuthStrategy> authStrategies;
     private final CredencialService credencialService;
@@ -53,7 +53,8 @@ public class UsuarioService {
     private ReviewService reviewService;
     private NotificacionService notificacionService;
 
-    public UsuarioService(List<AuthStrategy> authStrategies, JwtService jwtService, UsuarioRepository usuarioRepository, CredencialService credencialService, GuiaRepository guiaRepository, ViajeRepository viajeRepository) {
+    public UsuarioService(IdiomaRepository idiomaRepository, List<AuthStrategy> authStrategies, JwtService jwtService, UsuarioRepository usuarioRepository, CredencialService credencialService, GuiaRepository guiaRepository, ViajeRepository viajeRepository) {
+        this.idiomaRepository = idiomaRepository;
         this.authStrategies = authStrategies;
         this.jwtService = jwtService;
         this.usuarioRepository = usuarioRepository;
@@ -145,7 +146,16 @@ public class UsuarioService {
         Guia guia = (Guia) usuarioRepository.findByEmail(autenticado.getEmail())
                 .orElseThrow();
 
+        List<Idioma> idiomas = new ArrayList<>();
+        for (String nombre : input.getIdiomas()) {
+            Idioma idioma = idiomaRepository
+                    .findByNombre(nombre)
+                    .orElseThrow(() -> new BadRequestException("El idioma especificado no existe."));
+            idiomas.add(idioma);
+        }
+
         guia.setCredencial(credencial);
+        guia.setIdiomas(idiomas);
         guia.setKycCompleted(true);
         usuarioRepository.save(guia);
 
@@ -208,6 +218,7 @@ public class UsuarioService {
                 .servicios(guia.getServicios().stream().map(Servicio::toDto).toList())
                 .puntuacion(puntuacion)
                 .reviews(options.getIncluirReviews() ? reviews.stream().map(Review::toDto).toList() : null)
+                .idiomas(guia.getIdiomas())
                 .build();
     }
 
