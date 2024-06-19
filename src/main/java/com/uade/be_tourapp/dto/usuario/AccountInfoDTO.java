@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class AccountInfoDTO {
+    private Boolean isGuide;
     private String email;
     private String nombre;
     private String apellido;
