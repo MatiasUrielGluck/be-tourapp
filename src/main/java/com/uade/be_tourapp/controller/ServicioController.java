@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/servicio")
 @RestController
 public class ServicioController {
@@ -16,6 +18,13 @@ public class ServicioController {
 
     public ServicioController(ServicioService servicioService) {
         this.servicioService = servicioService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ServicioResponseDTO>> obtenerServiciosGuia(@RequestParam Integer guiaId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(servicioService.obtenerServicios(guiaId));
     }
 
     @PostMapping

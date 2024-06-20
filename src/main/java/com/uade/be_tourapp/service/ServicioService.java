@@ -6,17 +6,22 @@ import com.uade.be_tourapp.dto.servicio.ServicioResponseDTO;
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;
 import com.uade.be_tourapp.exception.BadRequestException;
+import com.uade.be_tourapp.repository.GuiaRepository;
 import com.uade.be_tourapp.repository.ServicioRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ServicioService {
     private final ServicioRepository servicioRepository;
     private final UsuarioService usuarioService;
+    private final GuiaRepository guiaRepository;
 
-    public ServicioService(ServicioRepository servicioRepository, UsuarioService usuarioService) {
+    public ServicioService(ServicioRepository servicioRepository, UsuarioService usuarioService, GuiaRepository guiaRepository) {
         this.servicioRepository = servicioRepository;
         this.usuarioService = usuarioService;
+        this.guiaRepository = guiaRepository;
     }
 
     public Guia obtenerGuia() {
@@ -34,6 +39,13 @@ public class ServicioService {
         Servicio servicio = servicioRepository.findById(id).orElseThrow(() -> new BadRequestException("El servicio no existe"));
         if (!servicio.getGuia().getId().equals(guia.getId())) throw new BadRequestException("Bad request");
         return servicio;
+    }
+
+    public List<ServicioResponseDTO> obtenerServicios(Integer guiaId) {
+        Guia guia = guiaRepository.findById(guiaId).orElseThrow(() -> new BadRequestException("El guia no existe."));
+        return guia.getServicios().stream()
+                .map(Servicio::toDto)
+                .toList();
     }
 
     public ServicioResponseDTO crearServicio(ServicioRequestDTO servicioRequestDTO) {
