@@ -64,6 +64,15 @@ public class ViajeService {
                 .build();
     }
 
+    public List<ViajeResponseDTO> obtenerViajes() {
+        Usuario usuario = usuarioService.obtenerAutenticado();
+        return viajeRepository
+                .findAllByGuiaIdOrTuristaId(usuario.getId(), usuario.getId())
+                .stream()
+                .map(Viaje::toDto)
+                .toList();
+    }
+
     public ViajeResponseDTO registrarViaje(ViajeRequestDTO viajeRequestDTO) {
         Usuario turista = usuarioService.obtenerAutenticado();
         Guia guia = usuarioService.getGuiaById(viajeRequestDTO.getGuiaId());

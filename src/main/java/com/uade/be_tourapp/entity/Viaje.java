@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.dto.viaje.ViajeResponseDTO;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.state.EstadoViaje.EstadoViaje;
 import jakarta.persistence.*;
@@ -85,5 +86,19 @@ public class Viaje {
 
     public void concluir() {
         this.estado.concluir(this);
+    }
+
+    public ViajeResponseDTO toDto() {
+        return ViajeResponseDTO.builder()
+                .id(this.getId())
+                .turistaId(this.turista.getId())
+                .guiaId(this.guia.getId())
+                .servicioId(this.servicio.getId())
+                .fechaInicio(this.getFechaInicio())
+                .fechaFin(this.getFechaFin())
+                .pais(this.getPais())
+                .ciudad(this.getCiudad())
+                .estado(this.estadoEnum)
+                .build();
     }
 }

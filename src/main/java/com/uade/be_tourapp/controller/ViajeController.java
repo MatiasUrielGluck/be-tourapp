@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/viaje")
 @RestController
 public class ViajeController {
@@ -16,7 +18,14 @@ public class ViajeController {
 
     public ViajeController(ViajeService viajeService){this.viajeService = viajeService; }
 
-    @PostMapping ("/registrar")
+    @GetMapping
+    public ResponseEntity<List<ViajeResponseDTO>> getViajes() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(viajeService.obtenerViajes());
+    }
+
+    @PostMapping("/registrar")
     public ResponseEntity<ViajeResponseDTO> registrarViaje(@RequestBody @Validated ViajeRequestDTO viajeRequestDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
