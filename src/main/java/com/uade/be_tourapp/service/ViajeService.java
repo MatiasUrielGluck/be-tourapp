@@ -50,20 +50,6 @@ public class ViajeService {
         return viaje;
     }
 
-    public ViajeResponseDTO generarResponse(Viaje viaje) {
-        return ViajeResponseDTO.builder()
-                .id(viaje.getId())
-                .turistaId(viaje.getTurista().getId())
-                .guiaId(viaje.getGuia().getId())
-                .servicioId(viaje.getServicio().getId())
-                .fechaInicio(viaje.getFechaInicio())
-                .fechaFin(viaje.getFechaFin())
-                .pais(viaje.getPais())
-                .ciudad(viaje.getCiudad())
-                .estado(viaje.getEstado().getNombre())
-                .build();
-    }
-
     public List<ViajeResponseDTO> obtenerViajes() {
         Usuario usuario = usuarioService.obtenerAutenticado();
         return viajeRepository
@@ -98,8 +84,7 @@ public class ViajeService {
         savedViaje.reservar();
 
         Viaje viajeReservado = viajeRepository.save(savedViaje);
-
-        return generarResponse(viajeReservado);
+        return viajeReservado.toDto();
     }
 
     public ViajeResponseDTO confirmarViaje(Integer viajeId) {
@@ -107,8 +92,7 @@ public class ViajeService {
         viaje.inicializarEstado(estadosViaje);
         viaje.confirmar();
         Viaje savedViaje = viajeRepository.save(viaje);
-
-        return generarResponse(savedViaje);
+        return savedViaje.toDto();
     }
 
     public ViajeResponseDTO cancelarViaje(Integer viajeId) {
@@ -131,8 +115,7 @@ public class ViajeService {
 
         viaje.cancelar(usuario);
         Viaje savedViaje = viajeRepository.save(viaje);
-
-        return generarResponse(savedViaje);
+        return savedViaje.toDto();
     }
 
     public ViajeResponseDTO concluirViaje(Integer viajeId) {
@@ -140,7 +123,6 @@ public class ViajeService {
         viaje.inicializarEstado(estadosViaje);
         viaje.concluir();
         Viaje savedViaje = viajeRepository.save(viaje);
-
-        return generarResponse(savedViaje);
+        return savedViaje.toDto();
     }
 }
