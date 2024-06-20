@@ -2,6 +2,7 @@ package com.uade.be_tourapp.controller;
 
 import com.uade.be_tourapp.dto.viaje.ViajeRequestDTO;
 import com.uade.be_tourapp.dto.viaje.ViajeResponseDTO;
+import com.uade.be_tourapp.dto.viaje.ViajeReviewDTO;
 import com.uade.be_tourapp.service.ViajeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ViajeController {
     public ViajeController(ViajeService viajeService){this.viajeService = viajeService; }
 
     @GetMapping
-    public ResponseEntity<List<ViajeResponseDTO>> getViajes() {
+    public ResponseEntity<List<ViajeReviewDTO>> getViajes() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(viajeService.obtenerViajes());

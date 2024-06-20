@@ -2,17 +2,17 @@ package com.uade.be_tourapp.service;
 
 import com.uade.be_tourapp.dto.viaje.ViajeRequestDTO;
 import com.uade.be_tourapp.dto.viaje.ViajeResponseDTO;
-import com.uade.be_tourapp.entity.Guia;
-import com.uade.be_tourapp.entity.Servicio;
-import com.uade.be_tourapp.entity.Usuario;
-import com.uade.be_tourapp.entity.Viaje;
+import com.uade.be_tourapp.dto.viaje.ViajeReviewDTO;
+import com.uade.be_tourapp.entity.*;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import com.uade.be_tourapp.exception.BadRequestException;
+import com.uade.be_tourapp.repository.ReviewRepository;
 import com.uade.be_tourapp.repository.ServicioRepository;
 import com.uade.be_tourapp.repository.ViajeRepository;
 import com.uade.be_tourapp.state.EstadoViaje.EstadoViaje;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,12 +23,14 @@ public class ViajeService {
     private final UsuarioService usuarioService;
     private final ServicioRepository servicioRepository;
     private final List<EstadoViaje> estadosViaje;
+    private final ReviewRepository reviewRepository;
 
-    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, List<EstadoViaje> estadosViaje) {
+    public ViajeService(ViajeRepository viajeRepository, UsuarioService usuarioService, ServicioRepository servicioRepository, List<EstadoViaje> estadosViaje, ReviewRepository reviewRepository) {
         this.viajeRepository = viajeRepository;
         this.usuarioService = usuarioService;
         this.servicioRepository = servicioRepository;
         this.estadosViaje = estadosViaje;
+        this.reviewRepository = reviewRepository;
     }
 
     public Viaje obtenerViajeGuiaAutorizado(Integer viajeId) {
@@ -50,13 +52,29 @@ public class ViajeService {
         return viaje;
     }
 
-    public List<ViajeResponseDTO> obtenerViajes() {
+    public List<ViajeReviewDTO> obtenerViajes() {
         Usuario usuario = usuarioService.obtenerAutenticado();
-        return viajeRepository
+
+
+        List<ViajeResponseDTO> viajes = viajeRepository
                 .findAllByGuiaIdOrTuristaId(usuario.getId(), usuario.getId())
                 .stream()
                 .map(Viaje::toDto)
                 .toList();
+
+        List<ViajeReviewDTO> viajesReviewDTO = new ArrayList<>();
+
+        for (ViajeResponseDTO viaje : viajes) {
+            Review review = reviewRepository.findByViajeId(viaje.getId()).orElse(null);
+
+            ViajeReviewDTO viajeDTO = ViajeReviewDTO.builder()
+                    .viaje(viaje)
+                    .review(review != null ? review.toDto() : null)
+                    .build();
+            viajesReviewDTO.add(viajeDTO);
+        }
+
+        return viajesReviewDTO;
     }
 
     public ViajeResponseDTO registrarViaje(ViajeRequestDTO viajeRequestDTO) {
