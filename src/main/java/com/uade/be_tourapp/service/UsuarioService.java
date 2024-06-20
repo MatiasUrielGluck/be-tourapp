@@ -177,6 +177,7 @@ public class UsuarioService {
     public AccountInfoDTO getAccountInfo() {
         Usuario usuario = obtenerAutenticado();
         return AccountInfoDTO.builder()
+                .id(usuario.getId())
                 .isGuide(usuario.getClass() == Guia.class)
                 .email(usuario.getEmail())
                 .nombre(usuario.getNombre())
