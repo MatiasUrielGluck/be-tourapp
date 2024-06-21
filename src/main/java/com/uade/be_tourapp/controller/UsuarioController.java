@@ -8,6 +8,7 @@ import com.uade.be_tourapp.dto.auth.RegistroResponseDTO;
 import com.uade.be_tourapp.dto.kyc.KycGuiaRequestDTO;
 import com.uade.be_tourapp.dto.kyc.KycRequestDTO;
 import com.uade.be_tourapp.dto.kyc.KycResponseDTO;
+import com.uade.be_tourapp.dto.usuario.AccountUpdateRequestDTO;
 import com.uade.be_tourapp.dto.usuario.FiltroDTO;
 import com.uade.be_tourapp.dto.usuario.GuiaResponseDTO;
 import com.uade.be_tourapp.enums.TipoServicioEnum;
@@ -61,6 +62,13 @@ public class UsuarioController {
     @GetMapping("")
     public ResponseEntity<AccountInfoDTO> getAccountInfo() {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.getAccountInfo());
+    }
+
+    @PutMapping("/cuenta")
+    public ResponseEntity<AccountInfoDTO> modificarCuenta(@RequestBody AccountUpdateRequestDTO accountUpdateRequestDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(usuarioService.updateAccountInfo(accountUpdateRequestDTO));
     }
 
     @GetMapping("/guia/{id}")

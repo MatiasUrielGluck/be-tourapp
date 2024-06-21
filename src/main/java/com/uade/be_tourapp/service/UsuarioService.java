@@ -1,6 +1,6 @@
 package com.uade.be_tourapp.service;
 
-import com.uade.be_tourapp.dto.usuario.AccountInfoDTO;
+import com.uade.be_tourapp.dto.usuario.*;
 import com.uade.be_tourapp.dto.auth.LoginRequestDTO;
 import com.uade.be_tourapp.dto.auth.LoginResponseDTO;
 import com.uade.be_tourapp.dto.auth.RegistroRequestDTO;
@@ -8,9 +8,6 @@ import com.uade.be_tourapp.dto.auth.RegistroResponseDTO;
 import com.uade.be_tourapp.dto.kyc.KycGuiaRequestDTO;
 import com.uade.be_tourapp.dto.kyc.KycRequestDTO;
 import com.uade.be_tourapp.dto.kyc.KycResponseDTO;
-import com.uade.be_tourapp.dto.usuario.FiltroDTO;
-import com.uade.be_tourapp.dto.usuario.GuiaResponseDTO;
-import com.uade.be_tourapp.dto.usuario.GuiaResponseOptions;
 import com.uade.be_tourapp.entity.*;
 import com.uade.be_tourapp.enums.AuthStrategiesEnum;
 import com.uade.be_tourapp.enums.RolUsuarioEnum;
@@ -174,20 +171,22 @@ public class UsuarioService {
                 .build();
     }
 
+    public AccountInfoDTO updateAccountInfo(AccountUpdateRequestDTO input) {
+        Usuario usuario = obtenerAutenticado();
+
+        if (input.getNombre() != null && !input.getNombre().isEmpty()) usuario.setNombre(input.getNombre());
+        if (input.getApellido() != null && !input.getApellido().isEmpty()) usuario.setApellido(input.getApellido());
+        if (input.getFoto() != null) usuario.setFoto(Base64Utils.base64ToBytes(input.getFoto()));
+        if (input.getNumTelefono() != null) usuario.setNumTelefono(input.getNumTelefono());
+        if (input.getGenero() != null) usuario.setGenero(input.getGenero());
+
+        usuarioRepository.save(usuario);
+        return usuario.toDto();
+    }
+
     public AccountInfoDTO getAccountInfo() {
         Usuario usuario = obtenerAutenticado();
-        return AccountInfoDTO.builder()
-                .id(usuario.getId())
-                .isGuide(usuario.getClass() == Guia.class)
-                .email(usuario.getEmail())
-                .nombre(usuario.getNombre())
-                .apellido(usuario.getApellido())
-                .genero(usuario.getGenero())
-                .dni(usuario.getDni())
-                .numTelefono(usuario.getNumTelefono())
-                .foto(usuario.getFoto() != null ? Base64Utils.bytesToBase64(usuario.getFoto()) : "")
-                .kycCompleted(usuario.getKycCompleted())
-                .build();
+        return usuario.toDto();
     }
 
     public Guia getGuiaById(Integer id) {
