@@ -1,7 +1,9 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.dto.usuario.AccountInfoDTO;
 import com.uade.be_tourapp.enums.AuthStrategiesEnum;
 import com.uade.be_tourapp.enums.GenerosEnum;
+import com.uade.be_tourapp.utils.Base64Utils;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -85,5 +87,20 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public AccountInfoDTO toDto() {
+        return AccountInfoDTO.builder()
+                .id(this.getId())
+                .isGuide(this.getClass() == Guia.class)
+                .email(this.getEmail())
+                .nombre(this.getNombre())
+                .apellido(this.getApellido())
+                .genero(this.getGenero())
+                .dni(this.getDni())
+                .numTelefono(this.getNumTelefono())
+                .foto(this.getFoto() != null ? Base64Utils.bytesToBase64(this.getFoto()) : "")
+                .kycCompleted(this.getKycCompleted())
+                .build();
     }
 }

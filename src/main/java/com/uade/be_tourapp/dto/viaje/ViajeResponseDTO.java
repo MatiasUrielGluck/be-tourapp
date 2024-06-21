@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.dto.viaje;
 
+import com.uade.be_tourapp.dto.usuario.AccountInfoDTO;
 import com.uade.be_tourapp.enums.EstadosViajeEnum;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +11,8 @@ import java.time.LocalDate;
 @Builder
 public class ViajeResponseDTO {
     private Integer id;
-    private Integer turistaId;
-    private Integer guiaId;
+    private AccountInfoDTO turista;
+    private AccountInfoDTO guia;
     private Integer servicioId;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;

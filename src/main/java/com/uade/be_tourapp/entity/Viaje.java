@@ -91,8 +91,8 @@ public class Viaje {
     public ViajeResponseDTO toDto() {
         return ViajeResponseDTO.builder()
                 .id(this.getId())
-                .turistaId(this.turista.getId())
-                .guiaId(this.guia.getId())
+                .turista(this.turista.toDto())
+                .guia(this.guia.toDto())
                 .servicioId(this.servicio.getId())
                 .fechaInicio(this.getFechaInicio())
                 .fechaFin(this.getFechaFin())
