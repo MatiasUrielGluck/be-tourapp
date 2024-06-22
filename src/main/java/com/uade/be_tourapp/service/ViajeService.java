@@ -52,6 +52,25 @@ public class ViajeService {
         return viaje;
     }
 
+    public ViajeReviewDTO obtenerViajeById(Integer viajeId) {
+        Usuario usuario = usuarioService.obtenerAutenticado();
+        Viaje viaje = viajeRepository.findById(viajeId).orElseThrow(() -> new BadRequestException("El viaje no existe"));
+
+        if (
+            !Objects.equals(viaje.getTurista().getId(), usuario.getId()) &&
+            !Objects.equals(viaje.getGuia().getId(), usuario.getId()))
+        {
+            throw new BadRequestException("Acceso denegado.");
+        }
+
+        Review review = reviewRepository.findByViajeId(viaje.getId()).orElse(null);
+
+        return ViajeReviewDTO.builder()
+                .viaje(viaje.toDto())
+                .review(review != null ? review.toDto() : null)
+                .build();
+    }
+
     public List<ViajeReviewDTO> obtenerViajes() {
         Usuario usuario = usuarioService.obtenerAutenticado();
 

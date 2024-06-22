@@ -26,6 +26,13 @@ public class ViajeController {
                 .body(viajeService.obtenerViajes());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ViajeReviewDTO> getViajeById(@PathVariable Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(viajeService.obtenerViajeById(id));
+    }
+
     @PostMapping("/registrar")
     public ResponseEntity<ViajeResponseDTO> registrarViaje(@RequestBody @Validated ViajeRequestDTO viajeRequestDTO) {
         return ResponseEntity
