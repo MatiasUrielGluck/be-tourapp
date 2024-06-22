@@ -37,6 +37,13 @@ public class Factura extends Documento {
         setPagada(false);
     }
 
+    public void configurar(Factura facturaAnticipo) {
+        setPrecio(facturaAnticipo.getPrecio());
+        setComision(calcularComision());
+        setTotal(calcularTotalFinal(facturaAnticipo));
+        setPagada(false);
+    }
+
     public Double calcularPrecio() {
         return getViaje().getServicio().getPrecio();
     }
@@ -54,5 +61,9 @@ public class Factura extends Documento {
     public Double calcularTotal() {
         if (getMotivo() == DocumentoEnum.ANTICIPO) return calcularReserva();
         return getPrecio() - calcularReserva() + calcularComision();
+    }
+
+    public Double calcularTotalFinal(Factura facturaAnticipo) {
+        return getPrecio() - facturaAnticipo.getTotal() + calcularComision();
     }
 }

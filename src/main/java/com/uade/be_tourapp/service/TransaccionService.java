@@ -37,7 +37,14 @@ public class TransaccionService {
                 .viaje(viaje)
                 .motivo(tipo)
                 .build();
-        factura.configurar();
+        if (tipo == DocumentoEnum.FINAL) {
+            Factura facturaAnticipo = facturaRepository.findByViajeIdAndMotivo(viaje.getId(), DocumentoEnum.ANTICIPO)
+                    .orElseThrow(() -> new BadRequestException("Error al buscar la factura de anticipo."));
+            factura.configurar(facturaAnticipo);
+        } else {
+            factura.configurar();
+        }
+
 
         Factura facturaGuardada = facturaRepository.save(factura);
 
