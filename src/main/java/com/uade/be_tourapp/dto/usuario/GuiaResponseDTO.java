@@ -25,6 +25,7 @@ public class GuiaResponseDTO {
     private Credencial credencial;
     private List<ServicioResponseDTO> servicios;
     private Double puntuacion;
+    private Integer reviewCount;
     private List<ReviewResponseDTO> reviews;
     private List<Idioma> idiomas;
 }

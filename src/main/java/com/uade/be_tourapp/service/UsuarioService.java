@@ -218,6 +218,7 @@ public class UsuarioService {
                 .credencial(options.getIncluirCredencial() ? guia.getCredencial() : null)
                 .servicios(guia.getServicios().stream().map(Servicio::toDto).toList())
                 .puntuacion(puntuacion)
+                .reviewCount(reviews.size())
                 .reviews(options.getIncluirReviews() ? reviews.stream().map(Review::toDto).toList() : null)
                 .idiomas(guia.getIdiomas())
                 .build();
