@@ -118,7 +118,7 @@ public class UsuarioService {
         usuario.setGenero(input.getGenero());
         usuario.setDni(input.getDni());
         usuario.setNumTelefono(input.getNumTelefono());
-        usuario.setFoto(Base64Utils.base64ToBytes(input.getFoto()));
+        usuario.setFoto(!input.getFoto().isEmpty() ? Base64Utils.base64ToBytes(input.getFoto()) : null);
         usuario.setKycCompleted(input.getRol() != RolUsuarioEnum.GUIA);
 
         usuarioRepository.save(usuario);
@@ -132,7 +132,7 @@ public class UsuarioService {
         Credencial credencial = Credencial.builder()
                 .numero(input.getNumero())
                 .vencimiento(input.getVencimiento())
-                .foto(Base64Utils.base64ToBytes(input.getFoto()))
+                .foto(!input.getFoto().isEmpty() ? Base64Utils.base64ToBytes(input.getFoto()) : null)
                 .build();
 
         if (!credencialService.esCredencialValida(credencial)) throw new BadRequestException("La credencial proporcionada es inválida.");
