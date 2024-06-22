@@ -21,6 +21,6 @@ public class Credencial {
     private LocalDate vencimiento;
 
     @Lob
-    @Column(name = "foto", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "foto", nullable = false, columnDefinition = "MEDIUMBLOB")
     private byte[] foto;
 }

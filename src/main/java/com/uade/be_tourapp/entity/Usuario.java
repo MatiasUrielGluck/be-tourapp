@@ -53,7 +53,7 @@ public class Usuario implements UserDetails {
     private String numTelefono;
 
     @Lob
-    @Column(name = "foto", columnDefinition = "BLOB")
+    @Column(name = "foto", columnDefinition = "MEDIUMBLOB")
     private byte[] foto;
 
     @Column(name = "kyc_completed", nullable = false)
