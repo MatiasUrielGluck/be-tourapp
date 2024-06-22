@@ -68,6 +68,7 @@ public class ViajeService {
         return ViajeReviewDTO.builder()
                 .viaje(viaje.toDto())
                 .review(review != null ? review.toDto() : null)
+                .servicio(viaje.getServicio().toDto())
                 .build();
     }
 
