@@ -33,8 +33,8 @@ public class Chat {
     public ChatDTO toDto() {
         return ChatDTO.builder()
                 .id(this.id)
-                .turistaId(this.turista.getId())
-                .guiaId(this.guia.getId())
+                .turista(this.turista.toDto())
+                .guia(this.guia.toDto())
                 .build();
     }
 }

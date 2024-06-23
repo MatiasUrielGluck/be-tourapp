@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.dto.chat;
 
+import com.uade.be_tourapp.dto.usuario.AccountInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChatDTO {
     private Long id;
-    private Integer turistaId;
-    private Integer guiaId;
+    private AccountInfoDTO turista;
+    private AccountInfoDTO guia;
 }
