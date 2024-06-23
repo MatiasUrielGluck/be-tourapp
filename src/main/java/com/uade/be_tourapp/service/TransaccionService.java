@@ -100,6 +100,17 @@ public class TransaccionService {
                     .build();
             respuesta.add(facturaDTO);
         });
+
+        List<Devolucion> devoluciones = devolucionRepository.findAllByViajeId(viajeId);
+        devoluciones.forEach(devolucion -> {
+            FacturaDTO facturaDTO = FacturaDTO.builder()
+                    .id(devolucion.getId())
+                    .viajeId(devolucion.getViaje().getId())
+                    .total(devolucion.getTotal())
+                    .build();
+            respuesta.add(facturaDTO);
+        });
+
         return respuesta;
     }
 
