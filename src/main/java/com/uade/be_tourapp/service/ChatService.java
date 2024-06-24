@@ -35,6 +35,8 @@ public class ChatService {
     }
 
     public void crearChat(Usuario turista, Guia guia) {
+        if (chatRepository.existsByTuristaIdAndGuiaId(turista.getId(), guia.getId())) return;
+
         Chat chat = Chat.builder()
                 .turista(turista)
                 .guia(guia)

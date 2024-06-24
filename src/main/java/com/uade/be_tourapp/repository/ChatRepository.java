@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ChatRepository extends CrudRepository<Chat, Long> {
     List<Chat> findAllByTuristaIdOrGuiaId(Integer turistaId, Integer guiaId);
+    Boolean existsByTuristaIdAndGuiaId(Integer turistaId, Integer guiaId);
 }
