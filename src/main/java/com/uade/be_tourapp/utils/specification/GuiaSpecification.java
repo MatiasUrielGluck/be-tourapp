@@ -4,6 +4,8 @@ import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Servicio;
 import com.uade.be_tourapp.enums.TipoServicioEnum;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 public class GuiaSpecification {
@@ -46,10 +48,17 @@ public class GuiaSpecification {
     /*
         Filtra por tipo de servicio
      */
-    public static Specification<Guia> tipoServicioInServicio(TipoServicioEnum tipo) {
+    public static Specification<Guia> tipoServicioInServicio(TipoServicioEnum tipo, String ciudad) {
         return (root, query, builder) -> {
-            Join<Guia, Servicio> guiaServicioJoin = root.join("servicios");
-            return builder.equal(guiaServicioJoin.get("tipo"), tipo);
+            Join<Guia, Servicio> guiaServicioJoin = root.join("servicios", JoinType.INNER);
+
+            // Adding conditions
+            Predicate tipoPredicate = builder.equal(guiaServicioJoin.get("tipo"), tipo);
+            Predicate ciudadPredicate = builder.equal(guiaServicioJoin.get("ciudad"), ciudad);
+
+            // Combining predicates
+
+            return builder.and(tipoPredicate, ciudadPredicate);
         };
     }
 }

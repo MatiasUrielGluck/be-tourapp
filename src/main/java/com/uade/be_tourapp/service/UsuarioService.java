@@ -238,7 +238,7 @@ public class UsuarioService {
                 .where(StringUtils.isBlank(filtroDTO.getNombre()) ? null : nombreLike(filtroDTO.getNombre()))
                 .and(StringUtils.isBlank(filtroDTO.getApellido()) ? null : apellidoLike(filtroDTO.getApellido()))
                 .and(StringUtils.isBlank(filtroDTO.getPais()) ? null : paisLikeInServicio(filtroDTO.getPais()))
-                .and(filtroDTO.getTipoServicio() == null ? null : tipoServicioInServicio(filtroDTO.getTipoServicio()))
+                .and(filtroDTO.getTipoServicio() == null ? null : tipoServicioInServicio(filtroDTO.getTipoServicio(), filtroDTO.getCiudad()))
                 .and(StringUtils.isBlank(filtroDTO.getCiudad()) ? null : ciudadLikeInServicio(filtroDTO.getCiudad()));
 
         List<Guia> guias = guiaRepository.findAll(filtros);
