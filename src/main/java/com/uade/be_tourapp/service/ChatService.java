@@ -2,6 +2,7 @@ package com.uade.be_tourapp.service;
 
 import com.uade.be_tourapp.dto.chat.ChatDTO;
 import com.uade.be_tourapp.dto.chat.MensajeDTO;
+import com.uade.be_tourapp.dto.chat.MensajeResponseDTO;
 import com.uade.be_tourapp.entity.Chat;
 import com.uade.be_tourapp.entity.Guia;
 import com.uade.be_tourapp.entity.Mensaje;
@@ -45,7 +46,7 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public void enviarMensaje(MensajeDTO mensajeDTO) {
+    public MensajeResponseDTO enviarMensaje(MensajeDTO mensajeDTO) {
         Usuario usuario = usuarioService.obtenerAutenticado();
 
         Chat chat = chatRepository.findById(mensajeDTO.getChatId()).orElseThrow(() -> new BadRequestException("El chat no existe."));
@@ -61,5 +62,20 @@ public class ChatService {
                 .build();
 
         mensajeRepository.save(mensaje);
+        return mensaje.toDto();
+    }
+
+    public List<MensajeResponseDTO> obtenerMensajes(Long chatId) {
+        Usuario usuario = usuarioService.obtenerAutenticado();
+
+        Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new BadRequestException("El chat no existe."));
+        if (!chat.getGuia().getId().equals(usuario.getId()) && !chat.getTurista().getId().equals(usuario.getId())) {
+            throw new BadRequestException("Acceso denegado.");
+        }
+
+        return chat.getMensajes()
+                .stream()
+                .map(Mensaje::toDto)
+                .toList();
     }
 }

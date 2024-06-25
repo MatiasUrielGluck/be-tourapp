@@ -1,5 +1,6 @@
 package com.uade.be_tourapp.entity;
 
+import com.uade.be_tourapp.dto.chat.MensajeResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,14 @@ public class Mensaje {
     @ManyToOne
     @JoinColumn(name = "chat_id", referencedColumnName = "id")
     private Chat chat;
+
+    public MensajeResponseDTO toDto() {
+        return MensajeResponseDTO.builder()
+                .chatId(this.chat.getId())
+                .contenido(this.contenido)
+                .fecha(this.fecha)
+                .emisorId(this.emisor.getId())
+                .emisorNombre(this.emisor.getNombre())
+                .build();
+    }
 }
