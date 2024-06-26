@@ -23,7 +23,7 @@ public class TrofeoService {
     }
 
     public void comprobarTrofeosGuia(Guia usuario, Double puntuacion, Integer cantReviews) {
-        if (cantReviews > 10 && puntuacion >= 4.5) {
+        if (cantReviews >= 10 && puntuacion >= 4.5) {
             asignarTrofeo(usuario, TrofeoEnum.EXITO);
         }
     }
